@@ -1,1 +1,0 @@
-select * from prs_users;
