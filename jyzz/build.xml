@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="jyzz" basedir="." >
+	<property name="WebRoot.dir" value="WebRoot" />
+	<property name="dist.dir" value="dist" />
+	<property file="db.properties">
+	</property>
+
+	<target name="copy" depends="init">
+		<copy todir="${dist.dir}">
+			<fileset dir="${WebRoot.dir}" excludes="**/lib/*,**/test/*,*svn*" />
+		</copy>
+		<copy tofile="${dist.dir}/WEB-INF/classes/jdbc.properties" file="jdbc.properties" overwrite="true" />
+		<copy tofile="${dist.dir}/WEB-INF/classes/log4j.properties" file="log4j.properties" overwrite="true" />
+		<replaceregexp match="&#13;&#10;" replace="" flags="g" byline="false">
+			<fileset dir="${dist.dir}" includes="**/*.jsp">
+			</fileset>
+		</replaceregexp>
+		<!--
+		<replaceregexp match="&#13;&#10;" replace="" flags="g" byline="false">
+			<fileset dir="${dist.dir}" includes="**/*.css">
+			</fileset>
+		</replaceregexp>
+		-->
+	</target>
+
+	<target name="scp-file">
+		<echo message="${remotedir}">
+		</echo>
+		<scp file="prs" 
+	    	todir="${user}:${password}@${server}:/root"  
+			trust="true" />
+		<echo message="*******transfer complete. *******************">
+		</echo>
+	</target>
+
+	<target name="update-fold">
+		<scp todir="${user}:${password}@${server}:${remotedir}"  
+	        	trust="true"  
+	        	verbose="true" >
+			<fileset dir="${dist.dir}" />
+		</scp>
+		<echo message="*******transfer compelete!*****************">
+		</echo>
+	</target>
+
+
+	<target name="echo">
+		<echo message="${remotedir}">
+		</echo>
+		<echo message="${user}">
+		</echo>
+		<echo message="${password}">
+		</echo>
+	</target>
+
+	<target name="clean">
+		<delete dir="${dist.dir}" />
+	</target>
+
+
+	<target name="init" depends="clean">
+		<mkdir dir="${dist.dir}" />
+	</target>
+
+	<target name="shutdown">
+		<sshexec host="${server}" 
+	      	username="${user}"  
+	      	password="${password}" 
+	      	trust="true" 
+	      	command="cd /opt/apache-tomcat-6.0.29/bin;shutdown.sh"/>
+	</target>
+	<target name="startup">
+		<sshexec host="${server}" 
+	      	username="${user}"  
+	      	password="${password}" 
+	      	trust="true" 
+	      	command="cd /opt/apache-tomcat-6.0.29/bin;startup.sh"/>
+	</target>
+
+
+	<target name="compres-js-css" description="压缩 js css 文件">
+		<taskdef name="yuicompress" classname="com.yahoo.platform.yui.compressor.YUICompressTask">
+		</taskdef>
+		<yuicompress linebreak="300" warn="false" munge="yes"    
+	            preserveallsemicolons="true" outputfolder="${dist.dir}">
+			<fileset dir="${WebRoot.dir}">
+				<include name="**/*.css"/>
+			</fileset>
+		</yuicompress>
+	</target>
+	
+	
+	<target description="Executes an SQL Script" name="DBrestore">
+			<sql classpath="mysql-connector-java-5.1.6-bin.jar"
+				print="true"
+				driver="com.mysql.jdbc.Driver"
+				delimitertype="row"
+				url="${jdbc.url}" 
+				userid="${jdbc.username}"
+				password="${jdbc.password}">
+				select * from prs_users;
+		</sql>
+	</target>
+
+</project>

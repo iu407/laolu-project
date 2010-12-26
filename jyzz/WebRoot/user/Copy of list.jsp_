@@ -1,0 +1,20 @@
+<%@ page language="java"  pageEncoding="UTF-8"%>
+<%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt"    uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn"     uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="sql"    uri="http://java.sun.com/jsp/jstl/sql"%>
+<%@ taglib prefix="x"      uri="http://java.sun.com/jsp/jstl/xml"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form"   uri="http://www.springframework.org/tags/form"  %>
+<%@ taglib prefix="tiles"  uri="http://tiles.apache.org/tags-tiles"  %>
+<%@ page trimDirectiveWhitespaces="true" %> 
+<div class="container_16">
+<ul>
+<c:forEach items="${users}" var="user">
+	<li id="li_${user.userid }">${user.userid },${user.username },${user.realname },${user.email }
+	<a href='<c:url value="/user/delete/${user.userid }"></c:url>' >删除</a>
+	<button onclick="deleteUser(${user.userid });">隐藏</button>
+	</li>
+</c:forEach>
+</ul>
+</div>

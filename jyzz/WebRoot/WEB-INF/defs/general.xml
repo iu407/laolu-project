@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN" "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+<tiles-definitions>
+
+	<definition name="default"   >
+	    <put-attribute name="title"    type="string"     value="jyzz read" />
+	    <put-attribute name="meta"     type="template"   value="/common/meta.jsp" />
+	    <put-attribute name="taglib"   type="template"   value="/common/taglib.jsp" />
+	</definition>
+	
+	<definition name="/portal"  template="/layout/layout.jsp" extends="default">
+		<put-attribute name="menu"    type="template"     value="/common/menu.jsp" />
+		<put-attribute name="show"    type="template"     value="/user/show.jsp" />
+		<put-attribute name="list"    type="template"     value="/user/list" />
+		<put-attribute name="form"    type="template"     value="/user/form.jsp" />
+	</definition>
+	
+<!--    <definition name="/test*" template="/layout/layout.jsp">-->
+<!--        <put name="title"  value="Tiles Showcase"/>-->
+<!--        <put name="header"  value="/tiles/header.jsp"/>-->
+<!--        <put name="body"  value="/tiles/body.jsp"/>-->
+<!--    </definition>-->
+<!--    <definition name="error" template="/layout/layout.jsp">-->
+<!--        <put name="title"  value="Tiles Showcase"/>-->
+<!--        <put name="header"  value="/tiles/header.jsp"/>-->
+<!--        <put name="body"  value="/tiles/body.jsp"/>-->
+<!--    </definition>-->
+<!--    <definition name="/user/*" template="/layout/layout.jsp">-->
+<!--        <put name="title"  value="Tiles Showcase"/>-->
+<!--        <put name="header"  value="/tiles/header.jsp"/>-->
+<!--        <put name="body"  value="/tiles/body.jsp"/>-->
+<!--    </definition>-->
+</tiles-definitions>

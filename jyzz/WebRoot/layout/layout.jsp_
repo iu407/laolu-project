@@ -1,0 +1,38 @@
+<%@ page contentType="text/html; charset=UTF-8"%> 
+<%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt"    uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn"     uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="sql"    uri="http://java.sun.com/jsp/jstl/sql"%>
+<%@ taglib prefix="x"      uri="http://java.sun.com/jsp/jstl/xml"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form"   uri="http://www.springframework.org/tags/form"  %>
+<%@ taglib prefix="tiles"  uri="http://tiles.apache.org/tags-tiles"  %>
+<%@ page trimDirectiveWhitespaces="true" %> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html> 
+<head> 
+<title>看杂志 吧</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="expires" content="0">    
+<meta http-equiv="keywords" content="杂志">
+<meta http-equiv="description" content="看杂志">
+<!--
+<link rel="stylesheet" type="text/css" href="styles.css">
+-->
+<link rel="stylesheet" type="text/css" href="<spring:url value="/static/styles/grid.css" htmlEscape="true" />">
+<link rel="stylesheet" type="text/css" href="<spring:url value="/static/styles/style.css" htmlEscape="true" />">
+<script type="text/javascript"  language="JavaScript">
+var ctx = '<%=request.getScheme()+"://"+ request.getServerName()+":"+request.getServerPort()+  request.getContextPath()%>'
+</script>
+
+<script type="text/javascript" src="<spring:url value="/static/javascripts/jquery-1.4.3.min.js" htmlEscape="true" />"       language="JavaScript"></script>
+<script type="text/javascript" src="<spring:url value="/static/javascripts/jyzz.js" htmlEscape="true" />"       language="JavaScript"></script>
+</head> 
+<body>
+<tiles:insertAttribute name="menu" />
+<tiles:insertAttribute name="list" />
+<tiles:insertAttribute name="form" />
+</body> 
+</html>
