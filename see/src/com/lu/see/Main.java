@@ -8,20 +8,27 @@ import java.net.URL;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 public class Main extends Activity {
 	private ImageView picImageView;
 	private String urlString ;
 	private Button nBut;//next button
-	
+	private Toast toast;
 	private ProgressDialog pbarDialog;
 	
 	private String dftBtnText = "远程照相";
@@ -60,9 +67,8 @@ public class Main extends Activity {
 						{
 							try {
 								iCount = (i + 1) * 20;
-								Thread.sleep(500);
+								Thread.sleep(300);
 								Message msg = new Message();
-								
 								if (i == 4) {
 									msg.what = Main.this.STOP;
 									mHandler.sendMessage(msg);
@@ -85,27 +91,68 @@ public class Main extends Activity {
 			}}
 		);
 	}
+	/**
+	 * 创建菜单
+	 */
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater=getMenuInflater();
+		inflater.inflate(R.menu.menu, menu);//指定使用的XML
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		int item_id = item.getItemId();// 得到当前选中MenuItem的ID
+		switch (item_id) {
+		case R.id.menu_setip: {
+			Intent showNextPageIntent = new Intent();
+			showNextPageIntent.setClass(Main.this, SetIpActivity.class);
+			/* 启动一个新的Activity */  
+            startActivity(showNextPageIntent);  
+            /* 关闭当前的Activity */  
+           // Main.this.finish();  
+			
+			break;
+		}
+		case R.id.about: {
+		}
+		case R.id.exit: {
+		}
+		}
+		return true;
+	}
 
-	public static Bitmap getHttpBitmap(String url) {
+
+	public Bitmap getHttpBitmap(String url) {
 		URL myFileUrl = null;
 		Bitmap bitmap = null;
 		try {
 			myFileUrl = new URL(url);
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
-		try {
 			HttpURLConnection conn = (HttpURLConnection) myFileUrl
 					.openConnection();
 			conn.setConnectTimeout(0);
 			conn.setDoInput(true);
+			conn.setConnectTimeout(5000);//链接超时
 			conn.connect();
 			InputStream is = conn.getInputStream();
 			bitmap = BitmapFactory.decodeStream(is);
 			is.close();
+			conn.disconnect();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+			pbarDialog.dismiss();
+			toast = Toast.makeText(getApplicationContext(), "连接超时，请等会再试！", Toast.LENGTH_LONG);
+			toast.setGravity(Gravity.CENTER, 0, 0);
+			LinearLayout toastView = (LinearLayout) toast.getView();
+			ImageView imageCodeProject = new ImageView(getApplicationContext());
+			imageCodeProject.setImageResource(R.drawable.loadinfo);
+			toastView.addView(imageCodeProject, 0);
+			toast.show();
 		}
+
 		return bitmap;
 	}
 

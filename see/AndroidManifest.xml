@@ -11,8 +11,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-    </application>
+        <activity android:name=".SetIpActivity" 
+			      android:label="@string/setIpActivity_label" 
+			      android:theme="@android:style/Theme.Dialog">
+        </activity>
+    
+</application>
 
 
 <uses-permission android:name="android.permission.INTERNET"></uses-permission>

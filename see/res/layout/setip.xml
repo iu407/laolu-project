@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+
+
+	<EditText 
+		android:text="127.0.0.1" 
+		android:id="@+id/ipEditTxt"
+		android:layout_width="fill_parent" 
+		android:layout_height="wrap_content"></EditText>
+	
+	
+
+<Button android:text="完成" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ipOkBtn"></Button>
+<Button android:text="返回" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ipCnlBtn"></Button>
+
+
+</LinearLayout>
