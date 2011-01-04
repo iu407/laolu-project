@@ -15,7 +15,7 @@
 <div class="grid_9">
 <form action="" name="pager" method="post" >
 <table>
-	<caption>我的订单</caption>
+	<caption>我的所有订单</caption>
 	<thead>
 	<tr>
 		<th>订单编号</th> 
@@ -55,7 +55,6 @@
 							</a>
 							</c:forEach>
 			</c:if>
-			
 					<div class="grid_2">
 					<h2><a href="${ctx }/mgz/show/${goods.goodsid}" id="a_${goods.goodsid}">${goods.goodsname}</a></h2>
 					<div class="grid_3">单价${item.price}</div>
