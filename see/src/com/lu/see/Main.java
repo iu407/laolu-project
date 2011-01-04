@@ -34,23 +34,29 @@ public class Main extends Activity {
 	private String dftBtnText = "远程照相";
 	private String runBtnText = "正在拍照";
 	
-	protected static final int STOP = 0x108;
-	protected static final int NEXT = 0x109;
+	private static final int STOP = 0x108;
+	private static final int NEXT = 0x109;
 	private int iCount = 0;
-
+	
+	public static final int IP_SET_OK = 0; 
+	
+	private String ipstring;
+	private String port = "8080";
+	private String path = "jmf/show";
+	 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main); 
 		picImageView = (ImageView)findViewById(R.id.urlimage); 
-		urlString = "http://192.168.1.12:8080/jyzz/jmf/show";//这个是默认的路径.路径需要配置
+		urlString = "http://localhost:8080/jyzz/jmf/show";//这个是默认的路径.路径需要配置
 //		Bitmap bm = getHttpBitmap(urlString);
 //		picImageView.setImageBitmap(bm);
 		
 		
 		nBut=(Button)findViewById(R.id.okButton);
 		nBut.setText(dftBtnText);
-		nBut.setOnClickListener(new Button.OnClickListener(){
+		nBut.setOnClickListener( new Button.OnClickListener(){
 			@Override
 			public void onClick(View arg0) {
 				pbarDialog = new ProgressDialog( Main.this );//首先得到环境
@@ -86,9 +92,8 @@ public class Main extends Activity {
 					}  
 				});
 				mThread.start();
-				
-				
-			}}
+			}
+			}
 		);
 	}
 	/**
@@ -105,25 +110,59 @@ public class Main extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int item_id = item.getItemId();// 得到当前选中MenuItem的ID
 		switch (item_id) {
-		case R.id.menu_setip: {
-			Intent showNextPageIntent = new Intent();
-			showNextPageIntent.setClass(Main.this, SetIpActivity.class);
-			/* 启动一个新的Activity */  
-            startActivity(showNextPageIntent);  
-            /* 关闭当前的Activity */  
-           // Main.this.finish();  
-			
-			break;
-		}
-		case R.id.about: {
-		}
-		case R.id.exit: {
-		}
+			case R.id.menu_setip: {
+				Intent showNextPageIntent = new Intent(Main.this, SetIpActivity.class);
+	            startActivityForResult(showNextPageIntent, IP_SET_OK); 
+				break;
+			}
 		}
 		return true;
 	}
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		Bundle bundle = data.getExtras();
+		String ipstring = bundle.getString("ipstring");//这里的值要保存
+		urlString = "http://"+ ipstring +":"+ port +"/jyzz/jmf/show";
+		pbarDialog = new ProgressDialog( Main.this );//首先得到环境
+		pbarDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		pbarDialog.setMessage("Loading...");
+		pbarDialog.setCancelable(false);
+		pbarDialog.setIndeterminate(false);
+		pbarDialog.show();
+		
+		Thread mThread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				for(int i = 0 ; i < 10 ; i++)
+				{
+					try {
+						iCount = (i + 1) * 20;
+						Thread.sleep(300);
+						Message msg = new Message();
+						if (i == 4) {
+							msg.what = Main.this.STOP;
+							mHandler.sendMessage(msg);
+							break;
+						} else// i<4
+						{
+							msg.what = Main.this.NEXT;
+							mHandler.sendMessage(msg);
+						}
 
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}  
+		});
+		mThread.start();
+	
+		
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+	
+	
 	public Bitmap getHttpBitmap(String url) {
 		URL myFileUrl = null;
 		Bitmap bitmap = null;
