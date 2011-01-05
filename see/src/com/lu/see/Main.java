@@ -9,6 +9,8 @@ import java.net.URL;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -40,12 +42,37 @@ public class Main extends Activity {
 	
 	public static final int IP_SET_OK = 0; 
 	
-	private String ipstring;
+	private String ipstring = "192.168.1.1";
 	private String port = "8080";
 	private String path = "jmf/show";
 	private Bitmap bm = null;
 	
+	private String dbName = "seedb.db";
+	
+	private SqlHelper sqlHelper;
+	private SQLiteDatabase sql;
+	
+	/**
+	 * 初始化数据库
+	 */
+	private void initdb(){
+		sqlHelper = new SqlHelper(this,dbName,null,1);//得到数据库，同时创建数据库
+		SQLiteDatabase  writableDatabase =  sqlHelper.getWritableDatabase();//可以写的操作
+		SQLiteDatabase  readableDatabase =  sqlHelper.getReadableDatabase();//可以读的操作
+		Cursor cursor =  readableDatabase.query(SqlHelper.tableName, null, null, null, null, null, null);
+		for(int i = 0 ; i <cursor.getCount(); i ++)
+			{
+				cursor.move(i);
+				String ipstr = cursor.getString(0);
+				System.out.println(ipstr);
+			}
+		
+		cursor.close();
+		readableDatabase.close();
+	}
+	
 	private void init(){
+		initdb();
 		picImageView = (ImageView)findViewById(R.id.urlimage); 
 		urlString = "http://localhost:8080/jyzz/jmf/show";//初始化路径
 		nBut=(Button)findViewById(R.id.okButton);

@@ -12,10 +12,27 @@
 		android:layout_width="fill_parent" 
 		android:layout_height="wrap_content"></EditText>
 	
+
+	<LinearLayout 
+	android:orientation="horizontal" 
+	android:layout_width="fill_parent" 
+	android:layout_height="fill_parent" 
+	android:layout_weight="1">
+			<Button 
+				android:text="完成" 
+				android:layout_below="@id/ipEditTxt"
+				android:layout_width="wrap_content" 
+				android:layout_height="wrap_content" 
+				android:id="@+id/ipOkBtn">
+			</Button>
+			<Button 
+				android:text="返回" 
+				android:layout_below="@id/ipEditTxt"
+				android:layout_width="wrap_content" 
+				android:layout_height="wrap_content" 
+				android:id="@+id/ipCnlBtn" >
+			</Button>
 	
-
-<Button android:text="完成" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ipOkBtn"></Button>
-<Button android:text="返回" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ipCnlBtn"></Button>
-
+	</LinearLayout>
 
 </LinearLayout>
