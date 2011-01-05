@@ -43,58 +43,38 @@ public class Main extends Activity {
 	private String ipstring;
 	private String port = "8080";
 	private String path = "jmf/show";
-	 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main); 
+	private Bitmap bm = null;
+	
+	private void init(){
 		picImageView = (ImageView)findViewById(R.id.urlimage); 
-		urlString = "http://localhost:8080/jyzz/jmf/show";//这个是默认的路径.路径需要配置
-//		Bitmap bm = getHttpBitmap(urlString);
-//		picImageView.setImageBitmap(bm);
-		
-		
+		urlString = "http://localhost:8080/jyzz/jmf/show";//初始化路径
 		nBut=(Button)findViewById(R.id.okButton);
 		nBut.setText(dftBtnText);
 		nBut.setOnClickListener( new Button.OnClickListener(){
 			@Override
 			public void onClick(View arg0) {
-				pbarDialog = new ProgressDialog( Main.this );//首先得到环境
-				pbarDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-				pbarDialog.setMessage("Loading...");
-				pbarDialog.setCancelable(false);
-				pbarDialog.setIndeterminate(false);
-				pbarDialog.show();
-				
-				Thread mThread = new Thread(new Runnable() {
-					@Override
-					public void run() {
-						for(int i = 0 ; i < 10 ; i++)
-						{
-							try {
-								iCount = (i + 1) * 20;
-								Thread.sleep(300);
-								Message msg = new Message();
-								if (i == 4) {
-									msg.what = Main.this.STOP;
-									mHandler.sendMessage(msg);
-									break;
-								} else// i<4
-								{
-									msg.what = Main.this.NEXT;
-									mHandler.sendMessage(msg);
-								}
-
-							} catch (InterruptedException e) {
-								e.printStackTrace();
-							}
-						}
-					}  
-				});
-				mThread.start();
+				if(bm!=null){
+					if(bm.isRecycled()==false) bm.recycle();
+				}
+				showProgress();
+				showImg();
 			}
 			}
 		);
+	}
+	 
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.main); 
+		init();
+//		picImageView = (ImageView)findViewById(R.id.urlimage); 
+//		urlString = "http://localhost:8080/jyzz/jmf/show";//这个是默认的路径.路径需要配置
+//		Bitmap bm = getHttpBitmap(urlString);
+//		picImageView.setImageBitmap(bm);
+		
+		
+	
 	}
 	/**
 	 * 创建菜单
@@ -121,16 +101,98 @@ public class Main extends Activity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		Bundle bundle = data.getExtras();
-		String ipstring = bundle.getString("ipstring");//这里的值要保存
-		urlString = "http://"+ ipstring +":"+ port +"/jyzz/jmf/show";
+		if(resultCode == SetIpActivity.RESULT_SUBMIT){
+			Bundle bundle = data.getExtras();
+			String ipstring = bundle.getString("ipstring");//这里的值要保存
+			urlString = "http://"+ ipstring +":"+ port +"/jyzz/jmf/show";
+			
+			showProgress();
+			showImg();
+		}
+		
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+	
+	//得到图片
+	public Bitmap getHttpBitmap(String url) throws IOException {
+		URL myFileUrl = null;
+		bm = null;
+		HttpURLConnection conn = null;
+		InputStream is = null;
+		try {
+			myFileUrl = new URL(url);
+			conn = (HttpURLConnection) myFileUrl.openConnection();
+			conn.setDoInput(true);
+			conn.setConnectTimeout(5000);//链接超时
+			conn.connect();
+			is = conn.getInputStream();
+			bm = BitmapFactory.decodeStream(is);
+			
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+			showErrMsg("连接超时！");
+		} catch (IOException e) {
+			e.printStackTrace();
+			pbarDialog.dismiss();
+			showErrMsg("连接超时！");
+		} finally{
+			is.close();
+			conn.disconnect();
+		}
+
+		return bm;
+	}
+
+
+	private Handler mHandler = new Handler() {
+		public void handleMessage(Message msg) {
+			switch(msg.what){
+			case STOP://到了最大值
+				try {
+					getHttpBitmap(urlString);
+				} catch (Exception e) {
+					e.printStackTrace();
+					showErrMsg("不能得到照片!");
+				}
+				picImageView.setImageBitmap(bm);
+				
+				pbarDialog.dismiss();
+				nBut.setText(dftBtnText);
+				
+				Thread.currentThread().interrupt();//中断当前线程.
+				break;
+			case NEXT:
+				if(!Thread.currentThread().isInterrupted()){//当前线程正在运行
+					pbarDialog.setProgress(iCount);
+				}
+				break;
+			}
+			super.handleMessage(msg);
+		}
+	};
+	
+	
+	private void showErrMsg(String msg){
+		toast = Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG);
+		toast.setGravity(Gravity.CENTER, 0, 0);
+		LinearLayout toastView = (LinearLayout) toast.getView();
+		ImageView imageCodeProject = new ImageView(getApplicationContext());
+		imageCodeProject.setImageResource(R.drawable.loadinfo);
+		toastView.addView(imageCodeProject, 0);
+		toast.show();
+	}
+	
+	private void showProgress(){
 		pbarDialog = new ProgressDialog( Main.this );//首先得到环境
 		pbarDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 		pbarDialog.setMessage("Loading...");
 		pbarDialog.setCancelable(false);
 		pbarDialog.setIndeterminate(false);
 		pbarDialog.show();
-		
+	}
+	
+	
+	private void showImg(){
 		Thread mThread = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -157,64 +219,7 @@ public class Main extends Activity {
 			}  
 		});
 		mThread.start();
-	
-		
-		super.onActivityResult(requestCode, resultCode, data);
 	}
-	
-	
-	public Bitmap getHttpBitmap(String url) {
-		URL myFileUrl = null;
-		Bitmap bitmap = null;
-		try {
-			myFileUrl = new URL(url);
-			HttpURLConnection conn = (HttpURLConnection) myFileUrl
-					.openConnection();
-			conn.setConnectTimeout(0);
-			conn.setDoInput(true);
-			conn.setConnectTimeout(5000);//链接超时
-			conn.connect();
-			InputStream is = conn.getInputStream();
-			bitmap = BitmapFactory.decodeStream(is);
-			is.close();
-			conn.disconnect();
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-			pbarDialog.dismiss();
-			toast = Toast.makeText(getApplicationContext(), "连接超时，请等会再试！", Toast.LENGTH_LONG);
-			toast.setGravity(Gravity.CENTER, 0, 0);
-			LinearLayout toastView = (LinearLayout) toast.getView();
-			ImageView imageCodeProject = new ImageView(getApplicationContext());
-			imageCodeProject.setImageResource(R.drawable.loadinfo);
-			toastView.addView(imageCodeProject, 0);
-			toast.show();
-		}
-
-		return bitmap;
-	}
-
-
-	private Handler mHandler = new Handler() {
-		public void handleMessage(Message msg) {
-			switch(msg.what){
-			case STOP://到了最大值
-				Bitmap bm = getHttpBitmap(urlString);
-				picImageView.setImageBitmap(bm);
-				pbarDialog.dismiss();
-				nBut.setText(dftBtnText);
-				Thread.currentThread().interrupt();//中断当前线程.
-				break;
-			case NEXT:
-				if(!Thread.currentThread().isInterrupted()){//当前线程正在运行
-					pbarDialog.setProgress(iCount);
-				}
-				break;
-			}
-			super.handleMessage(msg);
-		}
-	};
 }
 /*
 toast.show();

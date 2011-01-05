@@ -10,6 +10,7 @@ public class SetIpActivity extends Activity {
 	private Button ipOkBtn;
 	private Button ipCnlBtn;
 	public static final int RESULT_SUBMIT = 0;
+	public static final int RESULT_CNL = 1;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -23,10 +24,16 @@ public class SetIpActivity extends Activity {
 			public void onClick(View v) {
 				Bundle bundle = new Bundle(); 
 				bundle.putString("ipstring", ipEditTxt.getText().toString()); 
-				SetIpActivity.this.setResult(RESULT_SUBMIT, SetIpActivity.this.getIntent().putExtras(bundle)); 
+				SetIpActivity.this.setResult(RESULT_SUBMIT, SetIpActivity.this.getIntent().putExtras(bundle)); //传递数据
 				SetIpActivity.this.finish(); 
 			}
-			
+		});
+		//取消按钮
+		ipCnlBtn.setOnClickListener(new Button.OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				SetIpActivity.this.finish(); //消失
+			}
 		});
 	}
 	
