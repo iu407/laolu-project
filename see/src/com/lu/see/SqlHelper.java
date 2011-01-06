@@ -7,8 +7,6 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 
 public class SqlHelper extends SQLiteOpenHelper  {
 	public static final String tableName = "seet";
-	public static final String ID = "_id";
-	public static final String ipRow = "ip";
 
 	/**
 	 * 
@@ -26,7 +24,7 @@ public class SqlHelper extends SQLiteOpenHelper  {
 	 */
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		db.execSQL("CREATE TABLE IF NOT EXISTS "+tableName+" ("+ipRow+" VARCHAR)");
+		db.execSQL("CREATE TABLE IF NOT EXISTS "+tableName+" (ipaddress VARCHAR,port VARCHAR,path VARCHAR)");
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package com.lu.see;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -18,7 +19,6 @@ public class SetIpActivity extends Activity {
 		setContentView(R.layout.setip);
 		init();
 		
-		
 		ipOkBtn.setOnClickListener(new Button.OnClickListener(){
 			@Override
 			public void onClick(View v) {
@@ -32,15 +32,21 @@ public class SetIpActivity extends Activity {
 		ipCnlBtn.setOnClickListener(new Button.OnClickListener(){
 			@Override
 			public void onClick(View v) {
+				SetIpActivity.this.setResult(RESULT_CNL); //传递数据
 				SetIpActivity.this.finish(); //消失
 			}
 		});
 	}
+
 	
 	public void init(){
 		ipEditTxt=(EditText)findViewById(R.id.ipEditTxt);
 		ipOkBtn=(Button)findViewById(R.id.ipOkBtn);
 		ipCnlBtn=(Button)findViewById(R.id.ipCnlBtn);
+		
+		Bundle bundle = getIntent().getExtras();
+		PathModel pm = (PathModel)bundle.getSerializable("pathModel");
+		ipEditTxt.setText(pm.getIpaddress());
 		
 	}
 }

@@ -8,6 +8,7 @@ import java.net.URL;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -39,42 +40,45 @@ public class Main extends Activity {
 	private static final int STOP = 0x108;
 	private static final int NEXT = 0x109;
 	private int iCount = 0;
-	
 	public static final int IP_SET_OK = 0; 
-	
-	private String ipstring = "192.168.1.1";
-	private String port = "8080";
-	private String path = "jmf/show";
 	private Bitmap bm = null;
-	
 	private String dbName = "seedb.db";
-	
 	private SqlHelper sqlHelper;
 	private SQLiteDatabase sql;
-	
+	private PathModel pm;
 	/**
 	 * 初始化数据库
 	 */
 	private void initdb(){
 		sqlHelper = new SqlHelper(this,dbName,null,1);//得到数据库，同时创建数据库
-//		SQLiteDatabase  writableDatabase =  sqlHelper.getWritableDatabase();//可以写的操作
 		SQLiteDatabase  readableDatabase =  sqlHelper.getReadableDatabase();//可以读的操作
-		Cursor cursor =  readableDatabase.query(SqlHelper.tableName, null, null, null, null, null, null);
-		for(int i = 0 ; i <cursor.getCount(); i ++)
-			{
-				cursor.move(i);
-				String ipstr = cursor.getString(0);
-				System.out.println(ipstr);
-			}
-		
+		Cursor cursor = readableDatabase.query(SqlHelper.tableName, null, null, null, null, null, null);
+		if (cursor.moveToFirst()) {//如果有数据
+			do {
+				String ipaddress = cursor.getString(0);
+				String port = cursor.getString(1);
+				String path = cursor.getString(2);
+				System.out.println(ipaddress);
+				pm = new PathModel(ipaddress,port,path);
+			} while (cursor.moveToNext());
+		} else {//
+			sqlHelper.onUpgrade(readableDatabase, 1, 1);//删除数据表
+			pm = new PathModel();
+			ContentValues contentValues = new ContentValues();  
+			contentValues.put("ipaddress", pm.getIpaddress());
+			contentValues.put("port",      pm.getPort());
+			contentValues.put("path",      pm.getPath());
+			readableDatabase.insert(SqlHelper.tableName, null, contentValues);
+
+		}
 		cursor.close();
 		readableDatabase.close();
 	}
 	
 	private void init(){
 		initdb();
+		urlString = pm.toString();
 		picImageView = (ImageView)findViewById(R.id.urlimage); 
-		urlString = "http://localhost:8080/jyzz/jmf/show";//初始化路径
 		nBut=(Button)findViewById(R.id.okButton);
 		nBut.setText(dftBtnText);
 		nBut.setOnClickListener( new Button.OnClickListener(){
@@ -84,7 +88,7 @@ public class Main extends Activity {
 					if(bm.isRecycled()==false) bm.recycle();
 				}
 				showProgress();
-				showImg1();
+				showImg();
 			}
 			}
 		);
@@ -95,13 +99,10 @@ public class Main extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main); 
 		init();
-//		picImageView = (ImageView)findViewById(R.id.urlimage); 
-//		urlString = "http://localhost:8080/jyzz/jmf/show";//这个是默认的路径.路径需要配置
-//		Bitmap bm = getHttpBitmap(urlString);
-//		picImageView.setImageBitmap(bm);
 		
+		showProgress();
+		showImg();
 		
-	
 	}
 	/**
 	 * 创建菜单
@@ -118,7 +119,10 @@ public class Main extends Activity {
 		int item_id = item.getItemId();// 得到当前选中MenuItem的ID
 		switch (item_id) {
 			case R.id.menu_setip: {
+				Bundle bundle = new Bundle(); 
+				bundle.putSerializable("pathModel", pm);
 				Intent showNextPageIntent = new Intent(Main.this, SetIpActivity.class);
+				showNextPageIntent.putExtras(bundle);
 	            startActivityForResult(showNextPageIntent, IP_SET_OK); 
 				break;
 			}
@@ -130,11 +134,23 @@ public class Main extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if(resultCode == SetIpActivity.RESULT_SUBMIT){
 			Bundle bundle = data.getExtras();
-			String ipstring = bundle.getString("ipstring");//这里的值要保存
-			urlString = "http://"+ ipstring +":"+ port +"/jyzz/jmf/show";
+			String ipaddress = bundle.getString("ipstring");//这里的值要保存
 			
+			pm.setIpaddress(ipaddress);
+			
+			sqlHelper = new SqlHelper(this,dbName,null,1);//得到数据库，同时创建数据库
+			SQLiteDatabase  readableDatabase =  sqlHelper.getReadableDatabase();//可以读的操作
+			sqlHelper.onUpgrade(readableDatabase, 1, 1);//删除数据表
+			ContentValues contentValues = new ContentValues();  
+			contentValues.put("ipaddress", pm.getIpaddress());
+			contentValues.put("port",      pm.getPort());
+			contentValues.put("path",      pm.getPath());
+			readableDatabase.insert(SqlHelper.tableName, null, contentValues);
+			readableDatabase.close();
+			
+			urlString = pm.toString();
 			showProgress();
-			showImg1();
+			showImg();
 		}
 		
 		super.onActivityResult(requestCode, resultCode, data);
@@ -170,39 +186,12 @@ public class Main extends Activity {
 		return bm;
 	}
 
-
-	private Handler mHandler = new Handler() {
-		public void handleMessage(Message msg) {
-			switch(msg.what){
-			case STOP://到了最大值
-				try {
-					getHttpBitmap(urlString);
-				} catch (Exception e) {
-					e.printStackTrace();
-					showErrMsg("不能得到照片!");
-				}
-				picImageView.setImageBitmap(bm);
-				
-				pbarDialog.dismiss();
-				nBut.setText(dftBtnText);
-				
-				Thread.currentThread().interrupt();//中断当前线程.
-				break;
-			case NEXT:
-				if(!Thread.currentThread().isInterrupted()){//当前线程正在运行
-					pbarDialog.setProgress(iCount);
-				}
-				break;
-			}
-			super.handleMessage(msg);
-		}
-	};
 	
 	 private Handler handler = new Handler(){   
 	        @Override  
 	        public void handleMessage(Message msg) {   
 	        	try {
-					getHttpBitmap(urlString);
+					getHttpBitmap(pm.toString());
 				} catch (Exception e) {
 					e.printStackTrace();
 					showErrMsg("不能得到照片!");
@@ -234,55 +223,15 @@ public class Main extends Activity {
 		pbarDialog.setIndeterminate(false);
 		pbarDialog.show();
 	}
-	
+		
 	private void showImg(){
-		Thread mThread = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				for(int i = 0 ; i < 10 ; i++)
-				{
-					try {
-						iCount = (i + 1) * 20;
-						Thread.sleep(300);
-						Message msg = new Message();
-						if (i == 4) {
-							msg.what = Main.this.STOP;
-							mHandler.sendMessage(msg);
-							break;
-						} else// i<4
-						{
-							msg.what = Main.this.NEXT;
-							mHandler.sendMessage(msg);
-						}
-
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-			}  
-		});
-		mThread.start();
-	}
-	
-	private void showImg1(){
 		new Thread(){   
-			  
             @Override  
             public void run() {   
-                //需要花时间计算的方法   
-//                Calculation.calculate(4);   
-                   
-                //向handler发消息   
+                //这里增加方法
+//              Calculation.calculate(4);   
             	handler.sendEmptyMessage(0);   
             }}.start();   
 
 	}
-	
-	
 }
-/*
-toast.show();
-new AlertDialog.Builder(getApplicationContext()).setTitle("Android 提示").setMessage("这是一个提示,请确定").show(); 
-Bitmap bm = getHttpBitmap(urlString);
-picImageView.setImageBitmap(bm);
-*/
