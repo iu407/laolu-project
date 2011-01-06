@@ -57,7 +57,7 @@ public class Main extends Activity {
 	 */
 	private void initdb(){
 		sqlHelper = new SqlHelper(this,dbName,null,1);//得到数据库，同时创建数据库
-		SQLiteDatabase  writableDatabase =  sqlHelper.getWritableDatabase();//可以写的操作
+//		SQLiteDatabase  writableDatabase =  sqlHelper.getWritableDatabase();//可以写的操作
 		SQLiteDatabase  readableDatabase =  sqlHelper.getReadableDatabase();//可以读的操作
 		Cursor cursor =  readableDatabase.query(SqlHelper.tableName, null, null, null, null, null, null);
 		for(int i = 0 ; i <cursor.getCount(); i ++)
@@ -84,7 +84,7 @@ public class Main extends Activity {
 					if(bm.isRecycled()==false) bm.recycle();
 				}
 				showProgress();
-				showImg();
+				showImg1();
 			}
 			}
 		);
@@ -134,7 +134,7 @@ public class Main extends Activity {
 			urlString = "http://"+ ipstring +":"+ port +"/jyzz/jmf/show";
 			
 			showProgress();
-			showImg();
+			showImg1();
 		}
 		
 		super.onActivityResult(requestCode, resultCode, data);
@@ -198,9 +198,26 @@ public class Main extends Activity {
 		}
 	};
 	
+	 private Handler handler = new Handler(){   
+	        @Override  
+	        public void handleMessage(Message msg) {   
+	        	try {
+					getHttpBitmap(urlString);
+				} catch (Exception e) {
+					e.printStackTrace();
+					showErrMsg("不能得到照片!");
+				}
+				picImageView.setImageBitmap(bm);
+				
+				pbarDialog.dismiss();
+				nBut.setText(dftBtnText);
+	               
+	            //更新UI   
+	        }};   
+
 	
 	private void showErrMsg(String msg){
-		toast = Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG);
+		toast = Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT);
 		toast.setGravity(Gravity.CENTER, 0, 0);
 		LinearLayout toastView = (LinearLayout) toast.getView();
 		ImageView imageCodeProject = new ImageView(getApplicationContext());
@@ -217,7 +234,6 @@ public class Main extends Activity {
 		pbarDialog.setIndeterminate(false);
 		pbarDialog.show();
 	}
-	
 	
 	private void showImg(){
 		Thread mThread = new Thread(new Runnable() {
@@ -247,6 +263,22 @@ public class Main extends Activity {
 		});
 		mThread.start();
 	}
+	
+	private void showImg1(){
+		new Thread(){   
+			  
+            @Override  
+            public void run() {   
+                //需要花时间计算的方法   
+//                Calculation.calculate(4);   
+                   
+                //向handler发消息   
+            	handler.sendEmptyMessage(0);   
+            }}.start();   
+
+	}
+	
+	
 }
 /*
 toast.show();
