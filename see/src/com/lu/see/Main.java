@@ -210,7 +210,7 @@ public class Main extends Activity {
 		toast.setGravity(Gravity.CENTER, 0, 0);
 		LinearLayout toastView = (LinearLayout) toast.getView();
 		ImageView imageCodeProject = new ImageView(getApplicationContext());
-		imageCodeProject.setImageResource(R.drawable.loadinfo);
+//		imageCodeProject.setImageResource(R.drawable.loadinfo);
 		toastView.addView(imageCodeProject, 0);
 		toast.show();
 	}
