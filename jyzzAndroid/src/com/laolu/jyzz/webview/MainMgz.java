@@ -24,6 +24,8 @@ public class MainMgz extends Activity {
     private String urlString;
     private String preUrlString;
     private String welcomeUrlString = "http://192.168.1.12:8080/jyzz/adr/l";
+    
+    private int increment; 
 
     private Handler mHandler = new Handler(){
     	@Override
@@ -62,6 +64,14 @@ public class MainMgz extends Activity {
 				showPage();
 			}
 		});
+		
+		pbarDialog = new ProgressDialog( MainMgz.this );//首先得到环境
+		pbarDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+		pbarDialog.setMessage("请稍等");
+		pbarDialog.setMax(100);
+		pbarDialog.setProgress(0);
+		pbarDialog.setCancelable(true);
+		pbarDialog.setIndeterminate(true);
 		
 		showProgress();
 		showPage();
@@ -103,23 +113,17 @@ public class MainMgz extends Activity {
         }
 		@Override
 		public void onProgressChanged(WebView view, int newProgress) {
+			progressHandler.sendMessage(progressHandler.obtainMessage()); 
+
 			if(newProgress == 100){
 				pbarDialog.dismiss();
 			}
-			
 			super.onProgressChanged(view, newProgress);
 		}
-		
-        
     }
     
 	
 	private void showProgress(){
-		pbarDialog = new ProgressDialog( MainMgz.this );//首先得到环境
-		pbarDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-		pbarDialog.setMessage("请稍等");
-		pbarDialog.setCancelable(false);
-		pbarDialog.setIndeterminate(false);
 		pbarDialog.show();
 	}
 	
@@ -161,5 +165,9 @@ public class MainMgz extends Activity {
 	public void setWelcomeUrlString(String welcomeUrlString) {
 		this.welcomeUrlString = welcomeUrlString;
 	}
-
+	Handler progressHandler = new Handler() {
+		public void handleMessage(Message msg) {            
+			pbarDialog.incrementProgressBy(1);         
+		}     
+	}; 
 }
