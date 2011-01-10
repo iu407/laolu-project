@@ -15,7 +15,7 @@
 </c:if>
 </div>
 <h3><a href='${ctx }/user/myorder'>我的订单</a></h3>
-<h3>我的信息</h3>
+<h3><a href='${ctx }/user/myspace'>我的空间</a></h3>
 <ul>
 	<li><a href='${ctx }/user/myinfo'>修改信息</a></li>
 </ul>
