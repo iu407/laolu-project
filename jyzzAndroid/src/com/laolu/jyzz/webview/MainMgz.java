@@ -14,12 +14,12 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.TextView;
 public class MainMgz extends Activity {
-
-    private static final String LOG_TAG = "WebViewDemo";
-
+    private static final String LOG_TAG = "MainMgz";
     private WebView mWebView;
-    private Button preBtn;
+//    private Button preBtn;
+    private TextView refreshTV;
     private ProgressDialog pbarDialog;
     private String urlString;
     private String preUrlString;
@@ -56,24 +56,27 @@ public class MainMgz extends Activity {
 		
 		setPreUrlString(welcomeUrlString);
 		setUrlString(welcomeUrlString);
-		preBtn = (Button) findViewById(R.id.preBtn);//上一页
-		preBtn.setOnClickListener(new Button.OnClickListener() {
-			@Override
-			public void onClick(View arg0) {
-				setUrlString(preUrlString);
-				showProgress();
-				showPage();
-			}
-		});
+		
 		
 		pbarDialog = new ProgressDialog( MainMgz.this );//首先得到环境
-		pbarDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+		pbarDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 		pbarDialog.setMessage("请稍等");
 		pbarDialog.setMax(100);
 		pbarDialog.setProgress(0);
 		pbarDialog.setCancelable(true);
 		pbarDialog.setIndeterminate(true);
 		
+		
+		refreshTV = (TextView) findViewById(R.id.refreshTV);
+		refreshTV.setOnClickListener(new Button.OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				setUrlString(urlString);
+//				setUrlString("http://112.64.208.135/cgi-bin/renew.py");
+				showProgress();
+				showPage();
+			}
+		});
 		
 	}
 
@@ -87,15 +90,15 @@ public class MainMgz extends Activity {
          * loadUrl on the UI thread.
          */
         public void clickOnAndroid(final String url) {
-        	setUrlString(url);
-        	showProgress();
-        	showPage();
-//            mHandler.post(new Runnable() {
-//                public void run() {
-//                	System.out.println(url);//这里可以增加些东西。例如progressdialog
-//                    mWebView.loadUrl(url);//运行js
-//                }
-//            });
+//        	setUrlString(url);
+//        	showProgress();
+//        	showPage();
+            mHandler.post(new Runnable() {
+                public void run() {
+                	System.out.println(url);//这里可以增加些东西。例如progressdialog
+                    mWebView.loadUrl(url);//运行js
+                }
+            });
 
         }
     }
@@ -118,7 +121,7 @@ public class MainMgz extends Activity {
 			if(newProgress == 100){
 				pbarDialog.dismiss();
 			}
-			super.onProgressChanged(view, newProgress);
+//			super.onProgressChanged(view, newProgress);
 		}
     }
     
@@ -128,12 +131,8 @@ public class MainMgz extends Activity {
 	}
 	
 	private void showPage(){
-//		new Thread(){   
-//            @Override  
-//            public void run() {   
-//            	mHandler.sendEmptyMessage(0);   
-//            }}.start();   
 		mHandler.sendEmptyMessage(0);
+		
 	}
 	
 	private void loadUrl(){
