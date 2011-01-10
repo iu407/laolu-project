@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="intro">远程拍照</string>
+    <string name="app_name">远程拍照</string>
+    <string name="preBtn">返回</string>
+    <string name="home">主页</string>
+</resources>
