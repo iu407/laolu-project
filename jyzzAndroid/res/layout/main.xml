@@ -39,7 +39,7 @@
         android:layout_height="fill_parent"
         android:layout_weight="1"/>
 
-        <TextView
+    <TextView
         android:id="@+id/homeTV"
         android:text="主页"
         android:textSize="12pt"
@@ -56,6 +56,6 @@
         android:gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
-        android:layout_weight="1"/>   
+        android:layout_weight="1"/>
 	</LinearLayout>
 </LinearLayout>
