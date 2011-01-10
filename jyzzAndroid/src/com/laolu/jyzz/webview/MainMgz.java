@@ -24,8 +24,6 @@ public class MainMgz extends Activity {
     private String urlString;
     private String preUrlString;
     private String welcomeUrlString = "http://192.168.1.12:8080/jyzz/adr/l";
-    
-    private int increment; 
 
     private Handler mHandler = new Handler(){
     	@Override
@@ -40,6 +38,9 @@ public class MainMgz extends Activity {
         super.onCreate(icicle);
         setContentView(R.layout.main);
         init();
+        
+        showProgress();
+		showPage();
        
     }
     private void init() {
@@ -55,7 +56,7 @@ public class MainMgz extends Activity {
 		
 		setPreUrlString(welcomeUrlString);
 		setUrlString(welcomeUrlString);
-		preBtn = (Button) findViewById(R.id.preBtn);
+		preBtn = (Button) findViewById(R.id.preBtn);//上一页
 		preBtn.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
@@ -73,8 +74,7 @@ public class MainMgz extends Activity {
 		pbarDialog.setCancelable(true);
 		pbarDialog.setIndeterminate(true);
 		
-		showProgress();
-		showPage();
+		
 	}
 
     final class MyJavaScriptInterface {
@@ -167,7 +167,7 @@ public class MainMgz extends Activity {
 	}
 	Handler progressHandler = new Handler() {
 		public void handleMessage(Message msg) {            
-			pbarDialog.incrementProgressBy(1);         
+			pbarDialog.incrementProgressBy(50);         
 		}     
 	}; 
 }
