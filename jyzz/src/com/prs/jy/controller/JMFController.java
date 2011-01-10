@@ -22,21 +22,24 @@ import com.prs.jy.utils.JMFUtils;
  * @author laolu
  *
  */
-//@Controller
-//@RequestMapping("/jmf")
+@Controller
+@RequestMapping("/jmf")
 public class JMFController {
-	
-	@Autowired
-	private JMFUtils jmfUtils;
+	//测试时先注释掉下面一句
+//	@Autowired
+//	private JMFUtils jmfUtils;
 	
 	@RequestMapping("/show")
 	public void show(HttpServletRequest request, 
             HttpServletResponse response) throws IOException {
 		try {
-//			File file = new File("C:/img/Sunset.jpg");
-//		    Image src = ImageIO.read(file);
+			String dstr = "";
+			File path = new File(dstr);
+
+			File file = new File("C:/img/Sunset.jpg");
+		    Image image = ImageIO.read(file);
 //			jmfUtils.start();
-			Image image = jmfUtils.doCaptured();
+//			Image image = jmfUtils.doCaptured();
 			// String filename = jmfUtils.saveImage(image);
 //			System.out.println(image);
 			BufferedImage bufferedImage = new BufferedImage(image.getWidth(null),
