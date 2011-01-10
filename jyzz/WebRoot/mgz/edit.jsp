@@ -101,9 +101,11 @@
 			</div>
 			</li>
 		</ul>
-		<p><input type="submit" value="完成" />
+		
+		<div>
+		<input type="submit" value="完成" />
 			<div class='grid_2'><a href="${ctx }/adm/list">返回商品管理</a></div>
-		</p>
+		</div>
 		<div id="divFileProgressContainer" style="height: 75px;"></div>
 		<div id="thumbnails">
 		</div>
