@@ -6,16 +6,23 @@
     android:layout_height="fill_parent"
     >
     
-    <Button 
-     	android:layout_width="fill_parent" 
-	    android:layout_height="wrap_content" 
-	    android:id="@+id/preBtn"
-	    android:text="@string/preBtn"
-    />
+
     <WebView
         android:id="@+id/webview"
-    	android:layout_width="fill_parent" 
-    	android:layout_height="0dip"
-    	android:layout_weight="1"/>
+    	android:layout_width="wrap_content" 
+    	android:layout_height="wrap_content"
+    	android:layout_weight="11"/>
+    	
+    <TextView
+     	android:id="@+id/refreshTV"
+        android:text="刷新"
+        android:gravity="center_horizontal"
+        android:textSize="12pt"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/white"
+        />
+
     	
 </LinearLayout>
