@@ -1,28 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    android:background="#ffffff"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
     
-
+    
+   <LinearLayout
+    android:id ="@+id/lineLayout1"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_weight="1">
     <WebView
         android:id="@+id/webview"
     	android:layout_width="wrap_content" 
     	android:layout_height="wrap_content"
-    	android:layout_weight="11"/>
-    	
-    <TextView
-     	android:id="@+id/refreshTV"
-        android:text="刷新"
-        android:gravity="center_horizontal"
-        android:textSize="12pt"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="@drawable/white"
-        />
+    	/>
+	</LinearLayout>
+    
+    
+    <LinearLayout
+    android:id ="@+id/lineLayout2"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_marginTop="5dip"
+    android:background="#eeeeee"
+    android:layout_weight="8">	
 
-    	
+    <TextView
+        android:id = "@+id/red"
+        android:text="返回"
+        android:textSize="12pt"
+        android:gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"/>
+
+        <TextView
+        android:id="@+id/homeTV"
+        android:text="主页"
+        android:textSize="12pt"
+        android:gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        /> 
+
+    <TextView
+        android:id = "@+id/green"
+        android:text="nxt"
+        android:textSize="12pt"
+        android:gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"/>   
+	</LinearLayout>
 </LinearLayout>

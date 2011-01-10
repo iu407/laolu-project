@@ -19,7 +19,7 @@ public class MainMgz extends Activity {
     private static final String LOG_TAG = "MainMgz";
     private WebView mWebView;
 //    private Button preBtn;
-    private TextView refreshTV;
+    private TextView homeTV;
     private ProgressDialog pbarDialog;
     private String urlString;
     private String preUrlString;
@@ -30,7 +30,6 @@ public class MainMgz extends Activity {
     	public void handleMessage(Message msg) {//处理消息
     		loadUrl();
     	}
-    	
     };
 
     @Override
@@ -38,7 +37,6 @@ public class MainMgz extends Activity {
         super.onCreate(icicle);
         setContentView(R.layout.main);
         init();
-        
         showProgress();
 		showPage();
        
@@ -58,17 +56,8 @@ public class MainMgz extends Activity {
 		setUrlString(welcomeUrlString);
 		
 		
-		pbarDialog = new ProgressDialog( MainMgz.this );//首先得到环境
-		pbarDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-		pbarDialog.setMessage("请稍等");
-		pbarDialog.setMax(100);
-		pbarDialog.setProgress(0);
-		pbarDialog.setCancelable(true);
-		pbarDialog.setIndeterminate(true);
-		
-		
-		refreshTV = (TextView) findViewById(R.id.refreshTV);
-		refreshTV.setOnClickListener(new Button.OnClickListener() {
+		homeTV = (TextView) findViewById(R.id.homeTV);
+		homeTV.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
 				setUrlString(urlString);
@@ -91,7 +80,7 @@ public class MainMgz extends Activity {
          */
         public void clickOnAndroid(final String url) {
 //        	setUrlString(url);
-//        	showProgress();
+        	showProgress();
 //        	showPage();
             mHandler.post(new Runnable() {
                 public void run() {
@@ -116,8 +105,8 @@ public class MainMgz extends Activity {
         }
 		@Override
 		public void onProgressChanged(WebView view, int newProgress) {
-			progressHandler.sendMessage(progressHandler.obtainMessage()); 
-
+//			progressHandler.sendMessage(progressHandler.obtainMessage()); 
+//			pbarDialog.incrementProgressBy(newProgress-pbarDialog.getProgress());
 			if(newProgress == 100){
 				pbarDialog.dismiss();
 			}
@@ -127,6 +116,13 @@ public class MainMgz extends Activity {
     
 	
 	private void showProgress(){
+		pbarDialog = new ProgressDialog( MainMgz.this );//首先得到环境
+		pbarDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		pbarDialog.setMessage("请稍等");
+		pbarDialog.setMax(100);
+		pbarDialog.setProgress(0);
+		pbarDialog.setCancelable(true);
+		pbarDialog.setIndeterminate(true);
 		pbarDialog.show();
 	}
 	
@@ -144,6 +140,13 @@ public class MainMgz extends Activity {
           });
 
 	}
+	
+	@Override
+	public void onBackPressed() {
+		System.out.println("back");//这里弹出一个界面
+		super.onBackPressed();
+	}
+	
 
 	public String getUrlString() {
 		return urlString;
@@ -164,6 +167,9 @@ public class MainMgz extends Activity {
 	public void setWelcomeUrlString(String welcomeUrlString) {
 		this.welcomeUrlString = welcomeUrlString;
 	}
+	
+
+	
 	Handler progressHandler = new Handler() {
 		public void handleMessage(Message msg) {            
 			pbarDialog.incrementProgressBy(50);         
