@@ -109,7 +109,9 @@ public class MainActivity extends Activity {
 			showNextPageIntent.putExtras(bundle);
             startActivityForResult(showNextPageIntent, CommonUtil.IP_SET_OK);
 			break;
-
+		case R.id.menu_resetdb://清空数据
+			
+			break;
 		default:
 			break;
 		}

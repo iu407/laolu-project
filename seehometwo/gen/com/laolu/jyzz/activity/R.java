@@ -23,6 +23,7 @@ public final class R {
         public static final int ipOkBtn=0x7f060005;
         public static final int lineLayout1=0x7f060000;
         public static final int lineLayout2=0x7f060002;
+        public static final int menu_resetdb=0x7f060008;
         public static final int menu_setip=0x7f060007;
         public static final int webview=0x7f060001;
     }
@@ -37,8 +38,9 @@ public final class R {
         public static final int app_name=0x7f040001;
         public static final int home=0x7f040003;
         public static final int intro=0x7f040000;
+        public static final int menu_resetdb=0x7f040005;
         public static final int menu_setip=0x7f040004;
         public static final int preBtn=0x7f040002;
-        public static final int setIpActivity_label=0x7f040005;
+        public static final int setIpActivity_label=0x7f040006;
     }
 }
