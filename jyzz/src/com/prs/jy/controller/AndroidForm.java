@@ -75,7 +75,7 @@ public class AndroidForm {
 	 * @throws Exception
 	 */
 	@RequestMapping("/img")
-	public String showImg( Model model,Pager pager) throws Exception {
+	public String showImg( Model model) throws Exception {
 		return "/android/showimg";
 	}
 	
