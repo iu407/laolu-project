@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
@@ -59,6 +60,20 @@ public class MainActivity extends Activity {
 		MenuInflater inflater=getMenuInflater();//增压泵
 		inflater.inflate(R.menu.menu, menu);//指定使用的XML.增加个一个文件夹menu
 		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.menu_setip:
+			
+			break;
+
+		default:
+			break;
+		}
+		
+		return super.onOptionsItemSelected(item);
 	}
 	
 	private void showPage(){
