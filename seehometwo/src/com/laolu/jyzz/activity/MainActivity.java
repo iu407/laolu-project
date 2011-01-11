@@ -2,6 +2,7 @@ package com.laolu.jyzz.activity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -15,6 +16,7 @@ import com.laolu.jyzz.client.JavaScriptInterface;
 import com.laolu.jyzz.client.MyWebChromeClient;
 import com.laolu.jyzz.client.MyWebClient;
 import com.laolu.jyzz.listener.MyWebViewOnClickListener;
+import com.laolu.jyzz.utils.CommonUtil;
 public class MainActivity extends Activity {
     private static final String LOG_TAG = "MainMgz";
     private WebView mWebView;//主要的功能都在这里
@@ -66,7 +68,10 @@ public class MainActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.menu_setip:
-			
+			Bundle bundle = new Bundle(); 
+			Intent showNextPageIntent = new Intent(this, SetIpActivity.class);
+			showNextPageIntent.putExtras(bundle);
+            startActivityForResult(showNextPageIntent, CommonUtil.IP_SET_OK); 
 			break;
 
 		default:
