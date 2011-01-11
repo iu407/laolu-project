@@ -1,5 +1,7 @@
 package com.laolu.jyzz.listener;
 
+import com.laolu.jyzz.activity.R;
+
 import android.app.ProgressDialog;
 import android.os.Handler;
 import android.util.Log;
@@ -9,31 +11,25 @@ import android.webkit.WebView;
 
 public class MyWebViewOnClickListener implements OnClickListener {
 	private static final String LOG_TAG = "MyOnClickListener";
-	private ProgressDialog pbarDialog;
 	private String  urlString;
 	private WebView mWebView;
 
 
-	public MyWebViewOnClickListener(ProgressDialog pbarDialog, String urlString,
+	public MyWebViewOnClickListener( String urlString,
 			WebView webView) {
 		super();
-		this.pbarDialog = pbarDialog;
 		this.urlString = urlString;
-		mWebView = webView;
+		this.mWebView = webView;
 	}
 
 
 	@Override
 	public void onClick(View v) {
-		Log.d(LOG_TAG, "onClick");
-		if (!pbarDialog.isShowing()) {
-			pbarDialog.show();
+		if(R.id.homeTextView == v.getId()){
+			Log.d(LOG_TAG, "homeTextView Click");
+			mWebView.loadUrl(urlString);
 		}
-		new Handler().post(new Runnable() {
-			public void run() {
-				mWebView.loadUrl(urlString);// 运行js
-			}
-		});
+		
 	}
 
 }

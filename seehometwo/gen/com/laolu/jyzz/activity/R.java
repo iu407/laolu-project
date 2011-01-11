@@ -17,7 +17,7 @@ public final class R {
         public static final int white=0x7f020003;
     }
     public static final class id {
-        public static final int homeTV=0x7f050003;
+        public static final int homeTextView=0x7f050003;
         public static final int lineLayout1=0x7f050000;
         public static final int lineLayout2=0x7f050002;
         public static final int webview=0x7f050001;

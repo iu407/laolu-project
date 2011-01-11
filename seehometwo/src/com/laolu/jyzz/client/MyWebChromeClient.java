@@ -13,11 +13,9 @@ import android.webkit.WebView;
 public class MyWebChromeClient extends WebChromeClient {
 	private static final String LOG_TAG = "MyWebChromeClient";
 	
-	private ProgressDialog pbarDialog;
 	
-	public MyWebChromeClient(ProgressDialog pbarDialog) {
+	public MyWebChromeClient() {
 		super();
-		this.pbarDialog = pbarDialog;
 	}
 	@Override
 	public boolean onJsAlert(WebView view, String url, String message,JsResult result) {

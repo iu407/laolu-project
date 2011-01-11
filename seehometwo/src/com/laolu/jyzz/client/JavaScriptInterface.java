@@ -13,12 +13,10 @@ import android.webkit.WebView;
  */
 public class JavaScriptInterface {
 	private static final String LOG_TAG = "JavaScriptInterface";
-	private ProgressDialog pbarDialog;
 	private WebView mWebView;
 	
-	public JavaScriptInterface(ProgressDialog pbarDialog, WebView webView) {
-		this.pbarDialog = pbarDialog;
-		this.mWebView = webView;
+	public JavaScriptInterface( WebView webView) {
+		this.mWebView  = webView;
 	}
 	
 	
@@ -27,14 +25,12 @@ public class JavaScriptInterface {
 	 */
 	public void clickOnAndroid(final String url) {
 		Log.d(LOG_TAG, "clickOnAndroid");
-		if (!pbarDialog.isShowing()) {
-			pbarDialog.show();
-		}
-		new Handler().post(new Runnable() {
-			public void run() {
-				mWebView.loadUrl(url);// 运行js
-			}
-		});
+		mWebView.loadUrl(url);// 运行js
+//		new Handler().post(new Runnable() {
+//			public void run() {
+//				mWebView.loadUrl(url);// 运行js
+//			}
+//		});
 	}
 	
 

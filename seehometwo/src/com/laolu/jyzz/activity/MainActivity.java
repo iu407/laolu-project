@@ -7,37 +7,35 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
-import android.webkit.JsResult;
-import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.laolu.jyzz.client.JavaScriptInterface;
+import com.laolu.jyzz.client.MyWebChromeClient;
+import com.laolu.jyzz.client.MyWebClient;
+import com.laolu.jyzz.listener.MyWebViewOnClickListener;
 public class MainActivity extends Activity {
     private static final String LOG_TAG = "MainMgz";
-    private WebView mWebView;
-    private TextView homeTV;
+    private WebView mWebView;//主要的功能都在这里
+    private TextView homeTextView;
     private ProgressDialog pbarDialog;
     private String urlString;
     private String preUrlString;
     private String welcomeUrlString = "http://192.168.1.12:8080/jyzz/adr/l";
 
-    private Handler mHandler = new Handler(){
-    	@Override
-    	public void handleMessage(Message msg) {//处理消息
-    		loadUrl();
-    	}
-    };
-
     @Override
-    public void onCreate(Bundle icicle) {
-        super.onCreate(icicle);
-        setContentView(R.layout.main);
-        init();
-        showProgress();
+	public void onCreate(Bundle icicle) {
+		super.onCreate(icicle);
+		Log.d(LOG_TAG, "Create");
+		setContentView(R.layout.main);// 页面的view
+		init();
 		showPage();
-       
-    }
+	}
+    /**
+     * 初始化页面组件
+     */
     private void init() {
 		mWebView = (WebView) findViewById(R.id.webview);
 		WebSettings webSettings = mWebView.getSettings();
@@ -45,102 +43,25 @@ public class MainActivity extends Activity {
 		webSettings.setSaveFormData(false);
 		webSettings.setJavaScriptEnabled(true);
 		webSettings.setSupportZoom(false);
+		mWebView.setWebViewClient(new MyWebClient());
 		mWebView.setWebChromeClient(new MyWebChromeClient());
-		mWebView.addJavascriptInterface(new MyJavaScriptInterface(), "demo");// demo叫做接口名
-//		mWebView.loadUrl(welcomeUrlString);// 类似于主页的
+		mWebView.addJavascriptInterface(new JavaScriptInterface(mWebView), "demo");
 		
 		setPreUrlString(welcomeUrlString);
 		setUrlString(welcomeUrlString);
 		
-		
-		homeTV = (TextView) findViewById(R.id.homeTV);
-		homeTV.setOnClickListener(new Button.OnClickListener() {
-			@Override
-			public void onClick(View arg0) {
-				setUrlString(urlString);
-//				setUrlString("http://112.64.208.135/cgi-bin/renew.py");
-				showProgress();
-				showPage();
-			}
-		});
-		
-	}
-
-    final class MyJavaScriptInterface {
-
-        MyJavaScriptInterface() {
-        }
-
-        /**
-         * This is not called on the UI thread. Post a runnable to invoke
-         * loadUrl on the UI thread.
-         */
-        public void clickOnAndroid(final String url) {
-//        	setUrlString(url);
-        	showProgress();
-//        	showPage();
-            mHandler.post(new Runnable() {
-                public void run() {
-                	System.out.println(url);//这里可以增加些东西。例如progressdialog
-                    mWebView.loadUrl(url);//运行js
-                }
-            });
-
-        }
-    }
-
-    /**
-     * Provides a hook for calling "alert" from javascript. Useful for
-     * debugging your javascript.
-     */
-    final class MyWebChromeClient extends WebChromeClient {
-        @Override
-        public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
-            Log.d(LOG_TAG, message);
-            result.confirm();
-            return true;
-        }
-		@Override
-		public void onProgressChanged(WebView view, int newProgress) {
-//			progressHandler.sendMessage(progressHandler.obtainMessage()); 
-//			pbarDialog.incrementProgressBy(newProgress-pbarDialog.getProgress());
-			if(newProgress == 100){
-				pbarDialog.dismiss();
-			}
-//			super.onProgressChanged(view, newProgress);
-		}
-    }
-    
-	
-	private void showProgress(){
-		pbarDialog = new ProgressDialog( MainActivity.this );//首先得到环境
-		pbarDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-		pbarDialog.setMessage("请稍等");
-		pbarDialog.setMax(100);
-		pbarDialog.setProgress(0);
-		pbarDialog.setCancelable(true);
-		pbarDialog.setIndeterminate(true);
-		pbarDialog.show();
+		homeTextView = (TextView) findViewById(R.id.homeTextView);
+		homeTextView.setOnClickListener(new MyWebViewOnClickListener(urlString,mWebView));
 	}
 	
 	private void showPage(){
-		mHandler.sendEmptyMessage(0);
-		
+		 mWebView.loadUrl(urlString);
 	}
-	
-	private void loadUrl(){
-		  mHandler.post(new Runnable() {
-              public void run() {
-              	System.out.println(urlString);//这里可以增加些东西。例如progressdialog
-                  mWebView.loadUrl(urlString);//运行js
-              }
-          });
-
-	}
-	
+	/**
+	 * 返回按钮事件
+	 */
 	@Override
 	public void onBackPressed() {
-		System.out.println("back");//这里弹出一个界面
 		super.onBackPressed();
 	}
 	
@@ -164,10 +85,11 @@ public class MainActivity extends Activity {
 	public void setWelcomeUrlString(String welcomeUrlString) {
 		this.welcomeUrlString = welcomeUrlString;
 	}
-	
-	Handler progressHandler = new Handler() {
-		public void handleMessage(Message msg) {            
-			pbarDialog.incrementProgressBy(50);         
-		}     
-	}; 
+
+	public ProgressDialog getPbarDialog() {
+		return pbarDialog;
+	}
+	public void setPbarDialog(ProgressDialog pbarDialog) {
+		this.pbarDialog = pbarDialog;
+	} 
 }
