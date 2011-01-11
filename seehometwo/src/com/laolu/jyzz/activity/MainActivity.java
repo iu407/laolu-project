@@ -37,7 +37,7 @@ public class MainActivity extends Activity {
     private String welcomeUrlString = "http://192.168.1.12:8080/jyzz/adr/img";
     private SqlHelper sqlHelper;
     private PathModel pm;
-    private SQLiteDatabase  readableDatabase;
+    //private SQLiteDatabase  readableDatabase;
     @Override
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
@@ -66,14 +66,14 @@ public class MainActivity extends Activity {
 		setUrlString(pm.toString());
 		
 		homeTextView = (TextView) findViewById(R.id.homeTextView);
-		homeTextView.setOnClickListener(new MyWebViewOnClickListener(urlString,mWebView));
+		homeTextView.setOnClickListener(new MyWebViewOnClickListener(getUrlString(),mWebView));
 	}
     /**
      * 初始化数据库
      */
     private void initdb(){
 		sqlHelper = new SqlHelper(this,CommonUtil.DBNAME,null,1);//得到数据库，同时创建数据库
-		readableDatabase =  sqlHelper.getReadableDatabase();//可以读的操作
+		SQLiteDatabase readableDatabase =  sqlHelper.getReadableDatabase();//可以读的操作
 		Cursor cursor = readableDatabase.query(CommonUtil.T_HOME, null, null, null, null, null, null);
 		if (cursor.moveToFirst()) {//如果有数据
 			do {
@@ -149,7 +149,7 @@ public class MainActivity extends Activity {
 			readableDatabase.insert(CommonUtil.T_HOME, null, contentValues);
 			readableDatabase.close();
 			
-			urlString = pm.toString();
+			setUrlString(pm.toString());
 			showPage();
 		}
 		
@@ -203,6 +203,7 @@ public class MainActivity extends Activity {
 			case Dialog.BUTTON_NEGATIVE:
 				Toast.makeText(MainActivity.this, "正在清空数据。",
 						Toast.LENGTH_LONG).show();
+				SQLiteDatabase readableDatabase =  sqlHelper.getReadableDatabase();//可以读的操作
 				sqlHelper.onUpgrade(readableDatabase, 1, 1);
 				Toast.makeText(MainActivity.this, "请重新启动",
 						Toast.LENGTH_LONG).show();
