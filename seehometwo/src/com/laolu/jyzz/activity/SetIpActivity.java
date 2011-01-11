@@ -1,10 +1,11 @@
 package com.laolu.jyzz.activity;
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.laolu.jyzz.model.PathModel;
 
 public class SetIpActivity extends Activity {
 	private EditText ipEditTxt;
@@ -45,8 +46,8 @@ public class SetIpActivity extends Activity {
 		ipCnlBtn=(Button)findViewById(R.id.ipCnlBtn);
 		
 		Bundle bundle = getIntent().getExtras();
-//		PathModel pm = (PathModel)bundle.getSerializable("pathModel");
-//		ipEditTxt.setText(pm.getIpaddress());
+		PathModel pm = (PathModel)bundle.getSerializable("pathModel");
+		ipEditTxt.setText(pm.getIpaddress());
 		
 	}
 }

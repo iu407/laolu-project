@@ -39,5 +39,6 @@ public final class R {
         public static final int intro=0x7f040000;
         public static final int menu_setip=0x7f040004;
         public static final int preBtn=0x7f040002;
+        public static final int setIpActivity_label=0x7f040005;
     }
 }

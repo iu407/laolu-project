@@ -44,6 +44,9 @@ public class MainActivity extends Activity {
      * 初始化页面组件
      */
     private void init() {
+    	initdb();
+//    	urlString = pm.toString();
+    	
 		mWebView = (WebView) findViewById(R.id.webview);
 		WebSettings webSettings = mWebView.getSettings();
 		webSettings.setSavePassword(false);
@@ -53,8 +56,8 @@ public class MainActivity extends Activity {
 		mWebView.setWebViewClient(new MyWebClient());
 		mWebView.setWebChromeClient(new MyWebChromeClient());
 		mWebView.addJavascriptInterface(new JavaScriptInterface(mWebView), "demo");
-		setPreUrlString(welcomeUrlString);
-		setUrlString(welcomeUrlString);
+		setPreUrlString(pm.toString());
+		setUrlString(pm.toString());
 		
 		homeTextView = (TextView) findViewById(R.id.homeTextView);
 		homeTextView.setOnClickListener(new MyWebViewOnClickListener(urlString,mWebView));
@@ -82,7 +85,6 @@ public class MainActivity extends Activity {
 			contentValues.put("port",      pm.getPort());
 			contentValues.put("path",      pm.getPath());
 			readableDatabase.insert(CommonUtil.T_HOME, null, contentValues);
-
 		}
 		cursor.close();
 		readableDatabase.close();
@@ -102,9 +104,10 @@ public class MainActivity extends Activity {
 		switch (item.getItemId()) {
 		case R.id.menu_setip:
 			Bundle bundle = new Bundle(); 
+			bundle.putSerializable("pathModel", pm);
 			Intent showNextPageIntent = new Intent(this, SetIpActivity.class);
 			showNextPageIntent.putExtras(bundle);
-            startActivityForResult(showNextPageIntent, CommonUtil.IP_SET_OK); 
+            startActivityForResult(showNextPageIntent, CommonUtil.IP_SET_OK);
 			break;
 
 		default:
@@ -113,6 +116,33 @@ public class MainActivity extends Activity {
 		
 		return super.onOptionsItemSelected(item);
 	}
+	
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(resultCode == SetIpActivity.RESULT_SUBMIT){
+			Bundle bundle = data.getExtras();
+			String ipaddress = bundle.getString("ipstring");//这里的值要保存
+			
+			pm.setIpaddress(ipaddress);
+			
+			sqlHelper = new SqlHelper(this,CommonUtil.DBNAME,null,1);//得到数据库，同时创建数据库
+			SQLiteDatabase  readableDatabase =  sqlHelper.getReadableDatabase();//可以读的操作
+			sqlHelper.onUpgrade(readableDatabase, 1, 1);//删除数据表
+			ContentValues contentValues = new ContentValues();  
+			contentValues.put("ipaddress", pm.getIpaddress());
+			contentValues.put("port",      pm.getPort());
+			contentValues.put("path",      pm.getPath());
+			readableDatabase.insert(CommonUtil.T_HOME, null, contentValues);
+			readableDatabase.close();
+			
+			urlString = pm.toString();
+			showPage();
+		}
+		
+//		super.onActivityResult(requestCode, resultCode, data);
+	}
+	
 	
 	private void showPage(){
 		 mWebView.loadUrl(urlString);
