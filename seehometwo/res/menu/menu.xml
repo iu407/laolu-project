@@ -1,0 +1,5 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item android:title="@string/menu_setip" android:id="@+id/menu_setip"></item>
+<!--	<item android:id="@+id/about" android:title="About" />-->
+<!--	<item android:id="@+id/exit" android:title="Exit" />-->
+</menu>

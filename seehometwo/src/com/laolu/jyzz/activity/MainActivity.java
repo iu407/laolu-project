@@ -3,13 +3,11 @@ package com.laolu.jyzz.activity;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
-import android.view.View;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.laolu.jyzz.client.JavaScriptInterface;
@@ -23,7 +21,7 @@ public class MainActivity extends Activity {
     private ProgressDialog pbarDialog;
     private String urlString;
     private String preUrlString;
-    private String welcomeUrlString = "http://192.168.1.12:8080/jyzz/adr/l";
+    private String welcomeUrlString = "http://192.168.1.12:8080/jyzz/adr/img";
 
     @Override
 	public void onCreate(Bundle icicle) {
@@ -46,12 +44,21 @@ public class MainActivity extends Activity {
 		mWebView.setWebViewClient(new MyWebClient());
 		mWebView.setWebChromeClient(new MyWebChromeClient());
 		mWebView.addJavascriptInterface(new JavaScriptInterface(mWebView), "demo");
-		
 		setPreUrlString(welcomeUrlString);
 		setUrlString(welcomeUrlString);
 		
 		homeTextView = (TextView) findViewById(R.id.homeTextView);
 		homeTextView.setOnClickListener(new MyWebViewOnClickListener(urlString,mWebView));
+	}
+    
+    /**
+	 * 创建菜单
+	 */
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater=getMenuInflater();//增压泵
+		inflater.inflate(R.menu.menu, menu);//指定使用的XML.增加个一个文件夹menu
+		return true;
 	}
 	
 	private void showPage(){

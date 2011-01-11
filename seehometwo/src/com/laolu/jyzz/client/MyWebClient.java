@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.util.Log;
+import android.webkit.HttpAuthHandler;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -58,11 +59,31 @@ public class MyWebClient extends WebViewClient {
 	}
 	
 	@Override
+	public void onScaleChanged(WebView view, float oldScale, float newScale) {
+		super.onScaleChanged(view, oldScale, newScale);
+		Log.d(LOG_TAG, "onScaleChanged");
+	}
+	@Override
+	public void onReceivedError(WebView view, int errorCode,
+			String description, String failingUrl) {
+//		super.onReceivedError(view, errorCode, description, failingUrl);
+		Log.d(LOG_TAG, "onReceivedError");
+		pbarDialog.cancel();
+		view.loadUrl("file:///android_asset/failure.html");
+	}
+	@Override
 	public boolean shouldOverrideUrlLoading(WebView view, String url) {
 // 记得消耗掉这个事件。给不知道的朋友再解释一下，Android中返回True的意思就是到此为止吧,事件就会不会冒泡传递了，我们称之为消耗掉
 		return true;
 	}
 	
+	
+	@Override
+	public void onReceivedHttpAuthRequest(WebView view,
+			HttpAuthHandler handler, String host, String realm) {
+		super.onReceivedHttpAuthRequest(view, handler, host, realm);
+		Log.d(LOG_TAG, "onReceivedHttpAuthRequest " + realm);
+	}
 
 	public ProgressDialog getPbarDialog() {
 		return pbarDialog;

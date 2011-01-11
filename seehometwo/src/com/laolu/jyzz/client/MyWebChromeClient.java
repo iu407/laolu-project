@@ -28,8 +28,7 @@ public class MyWebChromeClient extends WebChromeClient {
 	public void onProgressChanged(WebView view, int newProgress) {
 		super.onProgressChanged(view, newProgress);
 //		pbarDialog.incrementProgressBy(newProgress);
+		Log.d(LOG_TAG, "onProgressChanged");
 	}
-	
-	
 
 }
