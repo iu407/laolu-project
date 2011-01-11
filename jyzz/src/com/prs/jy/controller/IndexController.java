@@ -70,7 +70,6 @@ public class IndexController {
 	
 	@RequestMapping("/commongoods")
 	public String commongoods(Model model){
-		System.out.println(model);
 //		model.addAttribute("msg", new Date());
 		return "/common/commongoods";
 	}

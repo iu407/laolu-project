@@ -67,5 +67,16 @@ public class AndroidForm {
 		model.addAttribute("peisongTime", peisongTime);
 		return "/android/list";
 	}
+	/**
+	 * 显示照片
+	 * @param model
+	 * @param pager
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/img")
+	public String showImg( Model model,Pager pager) throws Exception {
+		return "/android/showimg";
+	}
 	
 }
