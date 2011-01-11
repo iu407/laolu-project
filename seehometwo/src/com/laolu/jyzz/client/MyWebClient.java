@@ -33,9 +33,9 @@ public class MyWebClient extends WebViewClient {
 		
 		pbarDialog = new ProgressDialog( view.getContext() );//首先得到环境
 		pbarDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-		pbarDialog.setMessage("请稍等");
+		pbarDialog.setMessage("请稍等...");
 		pbarDialog.setCancelable(true);
-		pbarDialog.setIndeterminate(false);
+		pbarDialog.setIndeterminate(true);
 		pbarDialog.show();
 	}
 	
@@ -46,9 +46,11 @@ public class MyWebClient extends WebViewClient {
 		pbarDialog.cancel();
 		
 	}
+	
 	@Override
 	public void onLoadResource(WebView view, String url) {
 		super.onLoadResource(view, url);
+//		pbarDialog.incrementProgressBy(view.getProgress());//过程
 		Log.d(LOG_TAG, "onLoadResource");
 		if(!pbarDialog.isShowing()){
 			pbarDialog.show();//显示但是没有动起来
@@ -60,6 +62,7 @@ public class MyWebClient extends WebViewClient {
 // 记得消耗掉这个事件。给不知道的朋友再解释一下，Android中返回True的意思就是到此为止吧,事件就会不会冒泡传递了，我们称之为消耗掉
 		return true;
 	}
+	
 
 	public ProgressDialog getPbarDialog() {
 		return pbarDialog;
