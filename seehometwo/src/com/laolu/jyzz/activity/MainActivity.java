@@ -2,7 +2,10 @@ package com.laolu.jyzz.activity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -15,7 +18,9 @@ import android.widget.TextView;
 import com.laolu.jyzz.client.JavaScriptInterface;
 import com.laolu.jyzz.client.MyWebChromeClient;
 import com.laolu.jyzz.client.MyWebClient;
+import com.laolu.jyzz.db.SqlHelper;
 import com.laolu.jyzz.listener.MyWebViewOnClickListener;
+import com.laolu.jyzz.model.PathModel;
 import com.laolu.jyzz.utils.CommonUtil;
 public class MainActivity extends Activity {
     private static final String LOG_TAG = "MainMgz";
@@ -25,7 +30,8 @@ public class MainActivity extends Activity {
     private String urlString;
     private String preUrlString;
     private String welcomeUrlString = "http://192.168.1.12:8080/jyzz/adr/img";
-
+    private SqlHelper sqlHelper;
+    private PathModel pm;
     @Override
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
@@ -53,7 +59,34 @@ public class MainActivity extends Activity {
 		homeTextView = (TextView) findViewById(R.id.homeTextView);
 		homeTextView.setOnClickListener(new MyWebViewOnClickListener(urlString,mWebView));
 	}
-    
+    /**
+     * 初始化数据库
+     */
+    private void initdb(){
+		sqlHelper = new SqlHelper(this,CommonUtil.DBNAME,null,1);//得到数据库，同时创建数据库
+		SQLiteDatabase  readableDatabase =  sqlHelper.getReadableDatabase();//可以读的操作
+		Cursor cursor = readableDatabase.query(CommonUtil.T_HOME, null, null, null, null, null, null);
+		if (cursor.moveToFirst()) {//如果有数据
+			do {
+				String ipaddress = cursor.getString(0);
+				String port = cursor.getString(1);
+				String path = cursor.getString(2);
+				System.out.println(ipaddress);
+				pm = new PathModel(ipaddress,port,path);
+			} while (cursor.moveToNext());
+		} else {//
+			sqlHelper.onUpgrade(readableDatabase, 1, 1);//删除数据表
+			pm = new PathModel();
+			ContentValues contentValues = new ContentValues();  
+			contentValues.put("ipaddress", pm.getIpaddress());
+			contentValues.put("port",      pm.getPort());
+			contentValues.put("path",      pm.getPath());
+			readableDatabase.insert(CommonUtil.T_HOME, null, contentValues);
+
+		}
+		cursor.close();
+		readableDatabase.close();
+	}
     /**
 	 * 创建菜单
 	 */
