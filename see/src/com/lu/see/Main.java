@@ -109,7 +109,7 @@ public class Main extends Activity {
 	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater=getMenuInflater();
+		MenuInflater inflater=getMenuInflater();//增压泵
 		inflater.inflate(R.menu.menu, menu);//指定使用的XML
 		return true;
 	}
