@@ -1,9 +1,13 @@
 package com.laolu.jyzz.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.DialogInterface.OnClickListener;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -14,6 +18,7 @@ import android.view.MenuItem;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.laolu.jyzz.client.JavaScriptInterface;
 import com.laolu.jyzz.client.MyWebChromeClient;
@@ -32,6 +37,7 @@ public class MainActivity extends Activity {
     private String welcomeUrlString = "http://192.168.1.12:8080/jyzz/adr/img";
     private SqlHelper sqlHelper;
     private PathModel pm;
+    private SQLiteDatabase  readableDatabase;
     @Override
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
@@ -67,7 +73,7 @@ public class MainActivity extends Activity {
      */
     private void initdb(){
 		sqlHelper = new SqlHelper(this,CommonUtil.DBNAME,null,1);//得到数据库，同时创建数据库
-		SQLiteDatabase  readableDatabase =  sqlHelper.getReadableDatabase();//可以读的操作
+		readableDatabase =  sqlHelper.getReadableDatabase();//可以读的操作
 		Cursor cursor = readableDatabase.query(CommonUtil.T_HOME, null, null, null, null, null, null);
 		if (cursor.moveToFirst()) {//如果有数据
 			do {
@@ -110,7 +116,12 @@ public class MainActivity extends Activity {
             startActivityForResult(showNextPageIntent, CommonUtil.IP_SET_OK);
 			break;
 		case R.id.menu_resetdb://清空数据
-			
+			new AlertDialog.Builder(this)
+			.setIcon(android.R.drawable.btn_star).setTitle("清空数据")
+			.setMessage("清空数据吗？")
+			.setNegativeButton("清空", ocl)
+			.setPositiveButton("返回", ocl)
+			.create().show();
 			break;
 		default:
 			break;
@@ -184,4 +195,27 @@ public class MainActivity extends Activity {
 	public void setPbarDialog(ProgressDialog pbarDialog) {
 		this.pbarDialog = pbarDialog;
 	} 
+	
+	OnClickListener ocl = new OnClickListener() {
+		@Override
+		public void onClick(DialogInterface dialog, int which) {
+			switch (which) {
+			case Dialog.BUTTON_NEGATIVE:
+				Toast.makeText(MainActivity.this, "正在清空数据。",
+						Toast.LENGTH_LONG).show();
+				sqlHelper.onUpgrade(readableDatabase, 1, 1);
+				Toast.makeText(MainActivity.this, "请重新启动",
+						Toast.LENGTH_LONG).show();
+				break;
+			case Dialog.BUTTON_NEUTRAL:
+				Toast.makeText(MainActivity.this, "说不上喜欢不喜欢。",
+						Toast.LENGTH_LONG).show();
+				break;
+			case Dialog.BUTTON_POSITIVE:
+				Toast.makeText(MainActivity.this, "没有清空数据。",
+						Toast.LENGTH_LONG).show();
+				break;
+			}
+		}
+	};
 }
