@@ -11,7 +11,7 @@
 }
 
 body {
-	background: #FFFFFF url(Images/top_bg.png) top repeat-x;
+	background: #FFFFFF;
 	margin: 0px;
 	padding: 0px;
 }
