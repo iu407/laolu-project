@@ -9,7 +9,6 @@ public class City implements Serializable{
 	private String name;
 	private String enname;
 	
-	
 	public City() {
 		super();
 	}
