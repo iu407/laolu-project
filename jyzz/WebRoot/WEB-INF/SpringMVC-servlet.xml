@@ -92,15 +92,15 @@
 				</bean>
 	
 				<!-- 输出为xml数据-->
-<!--				<bean id="marshallingView"-->
-<!--					class="org.springframework.web.servlet.view.xml.MarshallingView">-->
-<!--					<property name="marshaller">-->
-<!--						<bean id="xStreamMarshaller" class="org.springframework.oxm.xstream.XStreamMarshaller">-->
-<!--							<property name="autodetectAnnotations" value="true" />-->
-<!--						</bean>-->
-<!--					</property>-->
-<!--					<property name="contentType" value="application/xml" />-->
-<!--				</bean>-->
+				<bean id="marshallingView"
+					class="org.springframework.web.servlet.view.xml.MarshallingView">
+					<property name="marshaller">
+						<bean id="xStreamMarshaller" class="org.springframework.oxm.xstream.XStreamMarshaller">
+							<property name="autodetectAnnotations" value="true" />
+						</bean>
+					</property>
+					<property name="contentType" value="application/xml" />
+				</bean>
 			</list>
 		</property>
 	</bean>
@@ -138,10 +138,19 @@
 					</property>
 				</bean>
 				<ref bean="mappingJacksonHttpMessageConverter"/>
+				<ref bean="marshallingConverter"/>
 			</list>
 		</property>
 	</bean>
 	<bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter" />
+
+
+	<bean id="marshallingConverter"
+		class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
+		<property name="supportedMediaTypes" value="application/xml" />
+	</bean>
+
+	
 	
 	<bean id="freeMarkerConfigurer" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer" >
 		<property name="templateLoaderPath" value="/WEB-INF/ftl/"></property>
