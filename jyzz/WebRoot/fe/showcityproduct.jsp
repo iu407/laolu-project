@@ -59,16 +59,20 @@ width: 100%;
 
 <c:if test="${fn:length(productData.citys) > 0  }">
 <ul class="tracks">
-		<c:forEach items="${productData.citys}" var="city" varStatus="sqe">
+	<c:forEach items="${productData.citys}" var="city" varStatus="sqe">
+		
+		<c:if test="${city.id == id  }">	
 			<li>
-	<script language="javascript">
-		var city_${city.id} = '${ctx }/adr/s/${city.id}';
-	</script>			
-				<a  href='${ctx }/fe/scp/${city.id}'>
+			<script language="javascript">
+				var city_${city.id} = '${ctx }/adr/s/${city.id}';
+			</script>			
+				<a onClick="window.demo.clickOnAndroid(city_${city.id})">
 					${city.name}
 				</a>
 			</li>
-		</c:forEach>
+		</c:if>			
+			
+	</c:forEach>
 </ul>		
 </c:if>
 <c:if test="${fn:length(productData.citys) <= 0  }">
