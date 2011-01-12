@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 public class CityProduct implements Serializable{
 	private static final long serialVersionUID = 661968542125862071L;
@@ -43,15 +42,12 @@ public class CityProduct implements Serializable{
 		this.listname = listname;
 	}
 
-	public List<Product> getProduct() {
+	public List<Product> getProducts() {
 		return products;
 	}
 
-	public void setProduct(List<Product> product) {
-		this.products = product;
+	public void setProducts(List<Product> products) {
+		this.products = products;
 	}
 	
-	public void addProduct(Product product){
-		products.add(product);
-	}
 }
