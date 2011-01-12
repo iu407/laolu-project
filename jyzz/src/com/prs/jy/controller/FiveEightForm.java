@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,7 +36,7 @@ public class FiveEightForm {
 	
 	
 	@RequestMapping(value="/pdl")
-	public String index(Model model) throws IOException{//购物车
+	public String index(ModelMap model) throws IOException{//购物车
 //		File file = new File("c:/products.xml");
 //		String xml = FileUtils.readFileToString(file);
 		RestTemplate template = new RestTemplate();//rest调用
@@ -71,9 +72,9 @@ public class FiveEightForm {
 	 * @return
 	 */
 	@RequestMapping( value="/scp/{id}" ,method = RequestMethod.GET)
-	public String showCityProduct(Model model,@PathVariable("id") Integer cityid) {
-		
-		return "/fe/scp";
+	public String showCityProduct(ModelMap model,@PathVariable("id") Integer cityid) {
+		model.put("id", cityid);
+		return "/fe/showcityproduct";
 	}
 	
 	/**
