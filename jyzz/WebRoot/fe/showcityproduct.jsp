@@ -62,14 +62,17 @@ width: 100%;
 	<c:forEach items="${productData.citys}" var="city" varStatus="sqe">
 		
 		<c:if test="${city.id == id  }">	
+			<c:forEach items="${city.products}" var="product" varStatus="pqe">
 			<li>
 			<script language="javascript">
-				var city_${city.id} = '${ctx }/adr/s/${city.id}';
-			</script>			
-				<a onClick="window.demo.clickOnAndroid(city_${city.id})">
-					${city.name}
+				var product_${product.id} = '${ctx }/adr/s/${product.id}';
+			</script>
+			<img src="${product.image}"/>		
+				<a onClick="window.demo.clickOnAndroid(product_${product.id})">
+					${product.name}
 				</a>
 			</li>
+			</c:forEach>
 		</c:if>			
 			
 	</c:forEach>
