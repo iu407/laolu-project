@@ -1,0 +1,4 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item android:id="@+id/menu_setip"   android:title="@string/menu_setip" ></item>
+	<item android:id="@+id/menu_resetdb" android:title="@string/menu_resetdb" ></item>
+</menu>
