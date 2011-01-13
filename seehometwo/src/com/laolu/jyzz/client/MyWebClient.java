@@ -20,7 +20,7 @@ import android.webkit.WebViewClient;
 public class MyWebClient extends WebViewClient {
 	private static final String LOG_TAG = "MyWebClient";
 
-	private ProgressDialog pbarDialog;
+	private ProgressDialog progressDialog;//这里是否可以调整为
 
 	public MyWebClient() {
 		super();
@@ -32,19 +32,19 @@ public class MyWebClient extends WebViewClient {
 		super.onPageStarted(view, url, favicon);
 		Log.d(LOG_TAG, "PageStarted");
 		
-		pbarDialog = new ProgressDialog( view.getContext() );//首先得到环境
-		pbarDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-		pbarDialog.setMessage("请稍等...");
-		pbarDialog.setCancelable(true);
-		pbarDialog.setIndeterminate(true);
-		pbarDialog.show();
+		progressDialog = new ProgressDialog( view.getContext() );//首先得到环境
+		progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		progressDialog.setMessage("请稍等...");
+		progressDialog.setCancelable(true);
+		progressDialog.setIndeterminate(true);
+		progressDialog.show();
 	}
 	
 	@Override
 	public void onPageFinished(WebView view, String url) {
 		super.onPageFinished(view, url);
 		Log.d(LOG_TAG, "PageFinished");
-		pbarDialog.cancel();
+		progressDialog.cancel();
 		
 	}
 	
@@ -53,8 +53,8 @@ public class MyWebClient extends WebViewClient {
 		super.onLoadResource(view, url);
 //		pbarDialog.incrementProgressBy(view.getProgress());//过程
 		Log.d(LOG_TAG, "onLoadResource");
-		if(!pbarDialog.isShowing()){
-			pbarDialog.show();//显示但是没有动起来
+		if(!progressDialog.isShowing()){
+			progressDialog.show();//显示但是没有动起来
 		}
 	}
 	
@@ -68,7 +68,7 @@ public class MyWebClient extends WebViewClient {
 			String description, String failingUrl) {
 //		super.onReceivedError(view, errorCode, description, failingUrl);
 		Log.d(LOG_TAG, "onReceivedError");
-		pbarDialog.cancel();
+		progressDialog.cancel();
 		view.loadUrl("file:///android_asset/failure.html");
 	}
 	@Override
@@ -86,11 +86,11 @@ public class MyWebClient extends WebViewClient {
 	}
 
 	public ProgressDialog getPbarDialog() {
-		return pbarDialog;
+		return progressDialog;
 	}
 
 	public void setPbarDialog(ProgressDialog pbarDialog) {
-		this.pbarDialog = pbarDialog;
+		this.progressDialog = pbarDialog;
 	}
 	
 	
