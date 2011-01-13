@@ -176,7 +176,12 @@ public class MainActivity extends Activity {
 	 */
 	@Override
 	public void onBackPressed() {
-		super.onBackPressed();
+		if(mWebView.canGoBack()){   
+			mWebView.goBack();
+            return;   
+		  }   
+		super.onBackPressed();   
+
 	}
 	
 
