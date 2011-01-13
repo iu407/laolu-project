@@ -37,6 +37,7 @@ public class MainActivity extends Activity {
     private String urlString;
     private String preUrlString;
     private String defaulUrlString = "http://192.168.1.100:8080/ss/fe/pdl";//默认路径
+    private String aboutUrlString = "http://192.168.1.100:8080/ss/about";//默认路径
 //    private String welcomeUrlString = "http://192.168.1.12:8080/jyzz/adr/img";//默认路径
     private SqlHelper sqlHelper;
     private PathModel pm;
@@ -62,13 +63,6 @@ public class MainActivity extends Activity {
 		homeTextView.setBackgroundResource(R.drawable.fav);
 		
 		mWebView = (WebView) findViewById(R.id.webview);
-//		WebSettings webSettings = mWebView.getSettings();
-//		webSettings.setSupportMultipleWindows(false);//多窗口是否阻止
-//		webSettings.setBlockNetworkImage(true);//阻止图片
-//		webSettings.setSavePassword(false);
-//		webSettings.setSaveFormData(false);
-//		webSettings.setJavaScriptEnabled(true);//支持enable
-//		webSettings.setSupportZoom(false);
 		mWebView.setWebViewClient(new MyWebClient());
 		mWebView.setWebChromeClient(new MyWebChromeClient());
 		mWebView.addJavascriptInterface(new JavaScriptInterface(mWebView,this), "demo");
@@ -121,20 +115,24 @@ public class MainActivity extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.menu_setip:
-			Bundle bundle = new Bundle(); 
-			bundle.putSerializable("pathModel", pm);
-			Intent showNextPageIntent = new Intent(this, SetIpActivity.class);
-			showNextPageIntent.putExtras(bundle);
-            startActivityForResult(showNextPageIntent, CommonUtil.IP_SET_OK);
-			break;
-		case R.id.menu_resetdb://清空数据
-			new AlertDialog.Builder(this)
-			.setIcon(android.R.drawable.btn_star).setTitle("清空数据")
-			.setMessage("清空数据吗？")
-			.setNegativeButton("清空", ocl)
-			.setPositiveButton("返回", ocl)
-			.create().show();
+//		case R.id.menu_setip:
+//			Bundle bundle = new Bundle(); 
+//			bundle.putSerializable("pathModel", pm);
+//			Intent showNextPageIntent = new Intent(this, SetIpActivity.class);
+//			showNextPageIntent.putExtras(bundle);
+//            startActivityForResult(showNextPageIntent, CommonUtil.IP_SET_OK);
+//			break;
+//		case R.id.menu_resetdb://清空数据
+//			new AlertDialog.Builder(this)
+//			.setIcon(android.R.drawable.btn_star).setTitle("清空数据")
+//			.setMessage("清空数据吗？")
+//			.setNegativeButton("清空", ocl)
+//			.setPositiveButton("返回", ocl)
+//			.create().show();
+//			break;
+			
+		case R.id.menu_about://关于
+			mWebView.loadUrl(aboutUrlString);
 			break;
 		default:
 			break;
