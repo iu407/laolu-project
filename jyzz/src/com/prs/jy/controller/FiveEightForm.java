@@ -32,7 +32,7 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 @RequestMapping("/fe")
 public class FiveEightForm {
 	private String citysurl    = "http://t.58.com/api/citys.xml";
-	private String productsurl = "http://t.58.com/api/products.xmll";
+	private String productsurl = "http://t.58.com/api/products.xml";
 	
 	
 	@RequestMapping(value="/pdl")
