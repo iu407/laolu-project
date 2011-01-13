@@ -36,8 +36,8 @@ public class MainActivity extends Activity {
     private ProgressDialog pbarDialog;
     private String urlString;
     private String preUrlString;
-    private String defaulUrlString = "http://192.168.1.100:8080/ss/fe/pdl";//默认路径
-    private String aboutUrlString = "http://192.168.1.100:8080/ss/about";//默认路径
+    private String defaulUrlString = CommonUtil.CTX+"/ss/fe/pdl";//默认路径
+    private String aboutUrlString  = CommonUtil.CTX+"/ss/about";//默认路径
 //    private String welcomeUrlString = "http://192.168.1.12:8080/jyzz/adr/img";//默认路径
     private SqlHelper sqlHelper;
     private PathModel pm;
