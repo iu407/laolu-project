@@ -54,7 +54,7 @@ public class MainActivity extends Activity {
      * 初始化页面组件
      */
     private void init() {
-    	initdb();
+//    	initdb();
 //    	urlString = pm.toString();
     	
     	homeTextView = (TextView) findViewById(R.id.homeTextView);
@@ -65,42 +65,15 @@ public class MainActivity extends Activity {
 		mWebView = (WebView) findViewById(R.id.webview);
 		mWebView.setWebViewClient(new MyWebClient());
 		mWebView.setWebChromeClient(new MyWebChromeClient());
-		mWebView.addJavascriptInterface(new JavaScriptInterface(mWebView,this), "demo");
-		setPreUrlString(pm.toString());
-		setUrlString(pm.toString());
+		mWebView.addJavascriptInterface(new JavaScriptInterface(mWebView,this), "myinterface");
+		setPreUrlString(defaulUrlString);
+		setUrlString(defaulUrlString);
 		
 		
 		
 		homeTextView.setOnClickListener(new MyWebViewOnClickListener(getUrlString(),mWebView));
 		refreshTextView.setOnClickListener(new MyWebViewOnClickListener(getUrlString(),mWebView));
 		preTextView.setOnClickListener(new MyWebViewOnClickListener(getUrlString(),mWebView));
-	}
-    /**
-     * 初始化数据库
-     */
-    private void initdb(){
-		sqlHelper = new SqlHelper(this,CommonUtil.DBNAME,null,1);//得到数据库，同时创建数据库
-		SQLiteDatabase readableDatabase =  sqlHelper.getReadableDatabase();//可以读的操作
-		Cursor cursor = readableDatabase.query(CommonUtil.T_HOME, null, null, null, null, null, null);
-		if (cursor.moveToFirst()) {//如果有数据
-			do {
-				String ipaddress = cursor.getString(0);
-				String port = cursor.getString(1);
-				String path = cursor.getString(2);
-				System.out.println(ipaddress);
-				pm = new PathModel(ipaddress,port,path);
-			} while (cursor.moveToNext());
-		} else {//
-			sqlHelper.onUpgrade(readableDatabase, 1, 1);//删除数据表
-			pm = new PathModel();
-			ContentValues contentValues = new ContentValues();  
-			contentValues.put("ipaddress", pm.getIpaddress());
-			contentValues.put("port",      pm.getPort());
-			contentValues.put("path",      pm.getPath());
-			readableDatabase.insert(CommonUtil.T_HOME, null, contentValues);
-		}
-		cursor.close();
-		readableDatabase.close();
 	}
     /**
 	 * 创建菜单
@@ -122,15 +95,6 @@ public class MainActivity extends Activity {
 //			showNextPageIntent.putExtras(bundle);
 //            startActivityForResult(showNextPageIntent, CommonUtil.IP_SET_OK);
 //			break;
-//		case R.id.menu_resetdb://清空数据
-//			new AlertDialog.Builder(this)
-//			.setIcon(android.R.drawable.btn_star).setTitle("清空数据")
-//			.setMessage("清空数据吗？")
-//			.setNegativeButton("清空", ocl)
-//			.setPositiveButton("返回", ocl)
-//			.create().show();
-//			break;
-			
 		case R.id.menu_about://关于
 			mWebView.loadUrl(aboutUrlString);
 			break;
@@ -141,7 +105,9 @@ public class MainActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 	
-
+	/**
+	 * 
+	 */
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if(resultCode == SetIpActivity.RESULT_SUBMIT){
@@ -160,11 +126,10 @@ public class MainActivity extends Activity {
 			readableDatabase.insert(CommonUtil.T_HOME, null, contentValues);
 			readableDatabase.close();
 			
-			setUrlString(pm.toString());
+			//setUrlString(pm.toString());
 			showPage();
 		}
 		
-//		super.onActivityResult(requestCode, resultCode, data);
 	}
 	
 	
