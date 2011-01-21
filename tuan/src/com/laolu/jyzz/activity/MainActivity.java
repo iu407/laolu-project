@@ -65,7 +65,7 @@ public class MainActivity extends Activity {
 		mWebView = (WebView) findViewById(R.id.webview);
 		mWebView.setWebViewClient(new MyWebClient());
 		mWebView.setWebChromeClient(new MyWebChromeClient());
-		mWebView.addJavascriptInterface(new JavaScriptInterface(mWebView,this), "myinterface");
+		mWebView.addJavascriptInterface(new JavaScriptInterface(mWebView,this), "demo");
 		setPreUrlString(defaulUrlString);
 		setUrlString(defaulUrlString);
 		
