@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="#ffffff"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+    
+    
+   <LinearLayout
+    android:id ="@+id/lineLayout1"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_weight="1">
+    <WebView
+        android:id="@+id/webview"
+    	android:layout_width="wrap_content" 
+    	android:layout_height="wrap_content"
+    	/>
+	</LinearLayout>
+    
+    
+    <LinearLayout
+    android:id ="@+id/lineLayout2"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_marginTop="5dip"
+    android:gravity="center"
+    android:layout_weight="8">	
+    
+	<TextView
+	        android:id="@+id/preTextView"
+	        android:text="@string/pre"
+	        android:textSize="9pt"
+	        android:gravity="left"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:drawableLeft="@drawable/left"
+	        /> 
+
+    <TextView
+        android:id="@+id/homeTextView"
+        android:textSize="9pt"
+        android:text="@string/home"
+        android:gravity="left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:drawableLeft="@drawable/home"
+        /> 
+
+	 
+    <TextView
+        android:id="@+id/refreshTextView"
+        android:text="@string/refresh"
+        android:textSize="9pt"
+        android:gravity="left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+         android:drawableLeft="@drawable/refresh"
+        /> 
+
+	</LinearLayout>
+</LinearLayout>
