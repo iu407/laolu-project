@@ -21,7 +21,8 @@ import com.laolu.listener.MyWebViewOnClickListener;
 import com.laolu.utils.CommonUtil;
 public class MainActivity extends Activity {
     private static final String LOG_TAG = "MainMgz";
-    private WebView mWebView;//主要的功能都在这里
+    private WebView mWebView = null;//主要的功能都在这里
+    private WebSettings webSettings =null;
     private TextView homeTextView;
     private TextView refreshTextView;//刷新
     private TextView preTextView;//返回
@@ -63,7 +64,8 @@ public class MainActivity extends Activity {
 		preTextView = (TextView) findViewById(R.id.preTextView);//返回
 		
 		mWebView = (WebView) findViewById(R.id.webview);
-		WebSettings webSettings = mWebView.getSettings();
+		webSettings = mWebView.getSettings();
+		webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
 		webSettings.setSupportMultipleWindows(false);//多窗口是否阻止
 		webSettings.setBlockNetworkImage(false);//阻止图片
 		webSettings.setSavePassword(false);
@@ -71,6 +73,7 @@ public class MainActivity extends Activity {
 		webSettings.setJavaScriptEnabled(true);//支持enable
 		webSettings.setSupportZoom(false);
 		
+		mWebView.setBackgroundColor(0);
 		mWebView.setWebViewClient(new MyWebClient());
 		mWebView.setWebChromeClient(new MyWebChromeClient(this));
 		mWebView.addJavascriptInterface(new JavaScriptInterface(mWebView,this), "demo");
