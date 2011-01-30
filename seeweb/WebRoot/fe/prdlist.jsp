@@ -11,10 +11,7 @@
 <c:if test="${fn:length(productData.citys) > 0  }">
 		<c:forEach items="${productData.citys}" var="city" varStatus="sqe">
 			<div >
-				<script language="javascript">
-					var url_${city.id} = '${ctx }/fe/scp/${city.id}';
-				</script>
-				<a  href='${ctx }/fe/scp/${city.id}' onClick="window.demo.clickOnAndroid(url_${city.id})"  class="licity">
+				<a  href='${ctx }/fe/scp/${city.id}'   class="licity">
 					${city.name}
 				</a>
 			</div>

@@ -24,7 +24,7 @@
 			<script language="javascript">
 				var tel_${product.id} = '${product.vendor_phone}';
 			</script>
-				<a onClick="window.demo.calltel(tel_${product.id})">
+				<a onClick="window.demo.calltel(tel_${product.id})" >
 						联系电话：<span style="font: 25px green normal">${product.vendor_phone}</span>
 				</a>
 				</div>
