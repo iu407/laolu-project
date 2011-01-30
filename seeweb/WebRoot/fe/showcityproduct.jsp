@@ -16,12 +16,9 @@
 		<c:if test="${city.id == id  }">	
 			<c:forEach items="${city.products}" var="product" varStatus="pqe">
 			<li>
-			<script language="javascript">
-				var product_${product.id} = '${ctx }/fe/sp/${product.id}';
-			</script>
 				<div >
 					<img src="${product.small_image}"/>		
-					<a onClick="window.demo.clickOnAndroid(product_${product.id})">
+					<a   href='${ctx }/fe/sp/${product.id}'>
 						${product.name}
 					</a>
 				</div>
