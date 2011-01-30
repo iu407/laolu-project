@@ -62,9 +62,8 @@ display: block;
 width: 100%;
 }
 img{
-	float: left;
 	max-width: 180px;
-	display: block;;
+	background-color: #eee;
 }
 div{
 display: block;
