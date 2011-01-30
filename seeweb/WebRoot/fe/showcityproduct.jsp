@@ -5,7 +5,6 @@
 <head>
 <%@ include file="../common/adrmeta.jsp" %>
 
-
 </head>
 <body>
 
