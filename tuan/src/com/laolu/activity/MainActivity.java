@@ -2,6 +2,9 @@ package com.laolu.activity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Picture;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -11,12 +14,12 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebView.PictureListener;
 import android.widget.TextView;
 
 import com.laolu.client.JavaScriptInterface;
 import com.laolu.client.MyWebChromeClient;
 import com.laolu.client.MyWebClient;
-import com.laolu.db.SqlHelper;
 import com.laolu.listener.MyWebViewOnClickListener;
 import com.laolu.utils.CommonUtil;
 public class MainActivity extends Activity {
@@ -29,8 +32,10 @@ public class MainActivity extends Activity {
     private ProgressDialog pbarDialog;
     private String urlString;
     private String preUrlString;
-    private String defaulUrlString = CommonUtil.CTX+"/ss/fe/pdl";//默认路径
+    private String defaulUrlString = "http://3g.sina.com.cn";//默认路径
     private String aboutUrlString  = "file:///android_asset/about.html";//关于路径
+    private Bitmap bitmap = null;
+    private Canvas canvas = null;
 //    private String welcomeUrlString = "http://192.168.1.12:8080/jyzz/adr/img";//默认路径
     //private SQLiteDatabase  readableDatabase;
     @Override
@@ -65,18 +70,37 @@ public class MainActivity extends Activity {
 		
 		mWebView = (WebView) findViewById(R.id.webview);
 		webSettings = mWebView.getSettings();
-		webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
-		webSettings.setSupportMultipleWindows(false);//多窗口是否阻止
-		webSettings.setBlockNetworkImage(false);//阻止图片
-		webSettings.setSavePassword(false);
-		webSettings.setSaveFormData(false);
+//		webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+//		webSettings.setSupportMultipleWindows(false);//多窗口是否阻止
+		webSettings.setBlockNetworkImage(true);//阻止图片
+//		webSettings.setSavePassword(false);
+//		webSettings.setSaveFormData(false);
 		webSettings.setJavaScriptEnabled(true);//支持enable
-		webSettings.setSupportZoom(false);
+		webSettings.setAppCacheEnabled(true);
+		webSettings.setAppCacheMaxSize(20*1024*1024);//20MB
+		webSettings.setAppCachePath("/flash/");
+		webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+
+//		webSettings.setSupportZoom(false);
+//		mWebView.setBackgroundColor(0);
 		
-		mWebView.setBackgroundColor(0);
 		mWebView.setWebViewClient(new MyWebClient());
 		mWebView.setWebChromeClient(new MyWebChromeClient(this));
 		mWebView.addJavascriptInterface(new JavaScriptInterface(mWebView,this), "demo");
+
+		mWebView.setPictureListener(new PictureListener(){
+			@Override
+			public void onNewPicture(WebView view, Picture picture) {
+				bitmap = Bitmap.createBitmap(
+												picture.getWidth(), 
+												picture.getHeight(), 
+												Bitmap.Config.RGB_565);
+				canvas = new Canvas(bitmap);             
+				picture.draw(canvas);
+				bitmap=null;
+			}
+			
+		});
 		setPreUrlString(defaulUrlString);
 		setUrlString(defaulUrlString);
 		
@@ -98,8 +122,11 @@ public class MainActivity extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.menu_about://关于
+		case R.id.menu_about:
 			mWebView.loadUrl(aboutUrlString);
+			break;
+		case R.id.menu_exit:
+			
 			break;
 		default:
 			break;
