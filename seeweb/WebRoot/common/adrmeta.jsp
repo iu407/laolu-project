@@ -23,6 +23,7 @@ body {
 }
 
 a {
+	display:block;
 	color: #000000;
 	text-decoration: none;
 }
@@ -54,19 +55,11 @@ li {
 	padding-bottom: 10px;
 }
 
-li img{
-	float: left;
-}
-li a{
-display: block;
-width: 100%;
-}
+
 img{
-	max-width: 180px;
-	background-color: #eee;
-}
-div{
-display: block;
+	padding-left:2px;
+	max-width: 220px;
+	display: block;
 }
 a.licity{
 	width: 120px;
