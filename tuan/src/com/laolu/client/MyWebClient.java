@@ -39,14 +39,15 @@ public class MyWebClient extends WebViewClient {
 	
 	@Override
 	public void onPageFinished(WebView view, String url) {
-		super.onPageFinished(view, url);
+		view.getSettings().setBlockNetworkImage(false);//阻止图片
 		Log.d(LOG_TAG, "PageFinished");
+//		view.pageDown(true);
 //		progressDialog.cancel();
 	}
 	
 	@Override
 	public void onLoadResource(WebView view, String url) {
-		super.onLoadResource(view, url);
+//		super.onLoadResource(view, url);
 //		pbarDialog.incrementProgressBy(view.getProgress());//过程
 		Log.d(LOG_TAG, "onLoadResource");
 //		if(!progressDialog.isShowing()){
@@ -83,6 +84,7 @@ public class MyWebClient extends WebViewClient {
 		super.onReceivedHttpAuthRequest(view, handler, host, realm);
 		Log.d(LOG_TAG, "onReceivedHttpAuthRequest " + realm);
 	}
+	
 //
 //	public ProgressDialog getPbarDialog() {
 //		return progressDialog;
