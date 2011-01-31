@@ -15,9 +15,9 @@
 		<c:if test="${city.id == id  }">	
 			<c:forEach items="${city.products}" var="product" varStatus="pqe">
 			<li>
+			<img src="${product.small_image}" alt="pic"/>
 				<div >
-					<img src="${product.small_image}"/>		
-					<a   href='${ctx }/fe/sp/${product.id}'>
+					<a  href='${ctx }/fe/sp/${product.id}'>
 						${product.name}
 					</a>
 				</div>
