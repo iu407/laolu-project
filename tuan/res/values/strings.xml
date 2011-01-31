@@ -11,5 +11,6 @@
     <string name="menu_resetdb">清空数据</string>
     <string name="setIpActivity_label">输入您的远程照相机的IP地址：</string>
     <string name="menu_about">关于</string>
+    <string name="menu_exit">退出</string>
     <string name="versionname">1.0</string>
 </resources>
