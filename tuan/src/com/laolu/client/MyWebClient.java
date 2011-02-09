@@ -66,8 +66,8 @@ public class MyWebClient extends WebViewClient {
 //		super.onReceivedError(view, errorCode, description, failingUrl);
 		Log.d(LOG_TAG, "onReceivedError");
 //		progressDialog.cancel();
-//		view.loadUrl("file:///android_asset/failure.html");
-		view.loadData(description, "text/html", "UTF-8");
+		view.loadUrl("file:///android_asset/failure.html");
+//		view.loadData(description, "text/html", "UTF-8");
 	}
 	@Override
 	public boolean shouldOverrideUrlLoading(WebView view, String url) {
