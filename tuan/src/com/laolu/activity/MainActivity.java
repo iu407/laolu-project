@@ -32,12 +32,11 @@ public class MainActivity extends Activity {
     private ProgressDialog pbarDialog;
     private String urlString;
     private String preUrlString;
-    private String defaulUrlString = "http://3g.sina.com.cn";//默认路径
+    private String defaulUrlString = CommonUtil.CITYLIST;//默认路径
+//    private String defaulUrlString = "http://3g.sina.com.cn";//默认路径
     private String aboutUrlString  = "file:///android_asset/about.html";//关于路径
     private Bitmap bitmap = null;
     private Canvas canvas = null;
-//    private String welcomeUrlString = "http://192.168.1.12:8080/jyzz/adr/img";//默认路径
-    //private SQLiteDatabase  readableDatabase;
     @Override
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
@@ -69,6 +68,7 @@ public class MainActivity extends Activity {
 		preTextView = (TextView) findViewById(R.id.preTextView);//返回
 		
 		mWebView = (WebView) findViewById(R.id.webview);
+		mWebView.setBackgroundResource(R.drawable.defautbg);
 		webSettings = mWebView.getSettings();
 //		webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
 //		webSettings.setSupportMultipleWindows(false);//多窗口是否阻止
@@ -88,19 +88,19 @@ public class MainActivity extends Activity {
 		mWebView.setWebChromeClient(new MyWebChromeClient(this));
 		mWebView.addJavascriptInterface(new JavaScriptInterface(mWebView,this), "demo");
 
-		mWebView.setPictureListener(new PictureListener(){
-			@Override
-			public void onNewPicture(WebView view, Picture picture) {
-				bitmap = Bitmap.createBitmap(
-												picture.getWidth(), 
-												picture.getHeight(), 
-												Bitmap.Config.RGB_565);
-				canvas = new Canvas(bitmap);             
-				picture.draw(canvas);
-				bitmap=null;
-			}
-			
-		});
+//		mWebView.setPictureListener(new PictureListener(){
+//			@Override
+//			public void onNewPicture(WebView view, Picture picture) {
+//				bitmap = Bitmap.createBitmap(
+//												picture.getWidth(), 
+//												picture.getHeight(), 
+//												Bitmap.Config.RGB_565);
+//				canvas = new Canvas(bitmap);             
+//				picture.draw(canvas);
+//				bitmap=null;
+//			}
+//			
+//		});
 		setPreUrlString(defaulUrlString);
 		setUrlString(defaulUrlString);
 		
@@ -126,7 +126,7 @@ public class MainActivity extends Activity {
 			mWebView.loadUrl(aboutUrlString);
 			break;
 		case R.id.menu_exit:
-			
+			finish();
 			break;
 		default:
 			break;
@@ -148,7 +148,8 @@ public class MainActivity extends Activity {
 		if(mWebView.canGoBack()){   
 			mWebView.goBack();
             return;   
-		  }   
+		  }else{
+		  }
 		super.onBackPressed();   
 
 	}
