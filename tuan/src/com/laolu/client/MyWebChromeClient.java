@@ -25,7 +25,7 @@ public class MyWebChromeClient extends WebChromeClient {
 		result.confirm();
 		return true;
 	}
-	//这里处理view
+
 	@Override
 	public void onProgressChanged(WebView view, int newProgress) {
 		activity.setProgress(newProgress * 100);
