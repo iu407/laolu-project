@@ -7,7 +7,7 @@
 
 </head>
 <body>
-
+<ul>
 	<c:forEach items="${productData.citys}" var="city" varStatus="sqe">
 			<c:forEach items="${city.products}" var="product" varStatus="pqe">
 				<c:if test="${product.id == id  }">
