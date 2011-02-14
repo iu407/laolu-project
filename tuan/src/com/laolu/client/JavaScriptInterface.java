@@ -29,7 +29,7 @@ public class JavaScriptInterface {
 	public void clickOnAndroid(final String url) {
 		Log.d(LOG_TAG, "clickOnAndroid");
 		
-		mWebView.loadUrl(url);// 运行js
+		mWebView.loadUrl(url);
 	}
 	
 
