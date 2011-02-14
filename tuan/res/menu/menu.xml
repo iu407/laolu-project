@@ -1,6 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 <!--	<item android:id="@+id/menu_setip"   android:title="@string/menu_setip" ></item>-->
 <!--	<item android:id="@+id/menu_resetdb" android:title="@string/menu_resetdb" ></item>-->
-	<item android:id="@+id/menu_about" android:title="@string/menu_about" ></item>
+	
 	<item android:id="@+id/menu_exit" android:title="@string/menu_exit" ></item>
+	<item android:id="@+id/menu_about" android:title="@string/menu_about" ></item>
 </menu>
