@@ -1,10 +1,6 @@
 package com.laolu.activity;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Picture;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -14,7 +10,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebView.PictureListener;
 import android.widget.TextView;
 
 import com.laolu.client.JavaScriptInterface;
@@ -28,10 +23,8 @@ public class MainActivity extends Activity {
     private TextView homeTextView;
     private TextView refreshTextView;//刷新
     private TextView preTextView;//返回
-//    private String urlString;
     private String preUrlString;
     private String urlString = "http://114.80.218.74:8080/ss/fe/pdl";//默认路径
-//    private String defaulUrlString = "http://toitly.co.cc/jyzz/";//默认路径
     private String aboutUrlString  = "file:///android_asset/about.html";//关于路径
     @Override
 	public void onCreate(Bundle icicle) {
@@ -71,8 +64,8 @@ public class MainActivity extends Activity {
 	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater=getMenuInflater();//增压泵
-		inflater.inflate(R.menu.menu, menu);//指定使用的XML.增加个一个文件夹menu
+		MenuInflater inflater=getMenuInflater();
+		inflater.inflate(R.menu.menu, menu);
 		return true;
 	}
 	
