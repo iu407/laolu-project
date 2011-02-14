@@ -1,11 +1,9 @@
 package com.laolu.client;
 
 
-import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.webkit.HttpAuthHandler;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -39,15 +37,15 @@ public class MyWebClient extends WebViewClient {
 	
 	@Override
 	public void onPageFinished(WebView view, String url) {
+		super.onPageFinished(view,url);
 		view.getSettings().setBlockNetworkImage(false);//阻止图片
 		Log.d(LOG_TAG, "PageFinished");
-//		view.pageDown(true);
 //		progressDialog.cancel();
 	}
 	
 	@Override
 	public void onLoadResource(WebView view, String url) {
-//		super.onLoadResource(view, url);
+		super.onLoadResource(view, url);
 //		pbarDialog.incrementProgressBy(view.getProgress());//过程
 		Log.d(LOG_TAG, "onLoadResource");
 //		if(!progressDialog.isShowing()){
@@ -71,7 +69,6 @@ public class MyWebClient extends WebViewClient {
 	}
 	@Override
 	public boolean shouldOverrideUrlLoading(WebView view, String url) {
-// 记得消耗掉这个事件。给不知道的朋友再解释一下，Android中返回True的意思就是到此为止吧,事件就会不会冒泡传递了，我们称之为消耗掉
 		view.loadUrl(url);   
         return true;   
 
