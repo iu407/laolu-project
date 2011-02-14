@@ -32,37 +32,33 @@ public class MainActivity extends Activity {
     private ProgressDialog pbarDialog;
     private String urlString;
     private String preUrlString;
+//    private String defaulUrlString = CommonUtil.CITYLIST;//默认路径
     private String defaulUrlString = CommonUtil.CITYLIST;//默认路径
-//    private String defaulUrlString = "http://3g.sina.com.cn";//默认路径
     private String aboutUrlString  = "file:///android_asset/about.html";//关于路径
-    private Bitmap bitmap = null;
-    private Canvas canvas = null;
     @Override
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
-		
 		Log.d(LOG_TAG, "MainActivity Create");
 //		If I use "myProgressBar.setProgressDrawable(R.drawable.my_progress);" it says: 
 		getWindow().requestFeature(Window.FEATURE_PROGRESS);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 		setContentView(R.layout.main);// 夹在页面布局
 		init();
 		showPage();
 	}
-    
-    @Override
-    protected void onStart() {
-    	super.onStart();
-    }
+//    
+//    @Override
+//    protected void onStart() {
+//    	super.onStart();
+//    }
     /**
      * 初始化页面组件
      */
     private void init() {
 //    	initdb();
 //    	urlString = pm.toString();
-    	
-
     	homeTextView = (TextView) findViewById(R.id.homeTextView);
 		refreshTextView = (TextView) findViewById(R.id.refreshTextView);
 		preTextView = (TextView) findViewById(R.id.preTextView);//返回
@@ -99,7 +95,6 @@ public class MainActivity extends Activity {
 //				picture.draw(canvas);
 //				bitmap=null;
 //			}
-//			
 //		});
 		setPreUrlString(defaulUrlString);
 		setUrlString(defaulUrlString);
@@ -148,7 +143,6 @@ public class MainActivity extends Activity {
 		if(mWebView.canGoBack()){   
 			mWebView.goBack();
             return;   
-		  }else{
 		  }
 		super.onBackPressed();   
 
